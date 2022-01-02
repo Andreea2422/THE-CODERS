@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.ubbcluj.map.thecoders.FunctionalitiesController">
+   <left>
+      <AnchorPane prefHeight="366.0" prefWidth="134.0" style="-fx-background-color: #EDA83B;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="120.0" fitWidth="139.0" layoutX="8.0" layoutY="-31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../Downloads/Images/logo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </left>
+   <top>
+      <AnchorPane prefHeight="38.0" prefWidth="520.0" style="-fx-background-color: #EDA83B;" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="searchTextField" layoutX="357.0" layoutY="7.0" promptText="Search" />
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>
