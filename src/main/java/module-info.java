@@ -9,4 +9,6 @@ module ro.ubbcluj.map.thecoders {
 
     opens ro.ubbcluj.map.thecoders to javafx.fxml;
     exports ro.ubbcluj.map.thecoders;
+    exports ro.ubbcluj.map.thecoders.controller;
+    opens ro.ubbcluj.map.thecoders.controller to javafx.fxml;
 }

@@ -1,4 +1,4 @@
-package ro.ubbcluj.map.thecoders;
+package ro.ubbcluj.map.thecoders.controller;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -11,12 +11,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import ro.ubbcluj.map.thecoders.JavaPostgresSQL;
+import ro.ubbcluj.map.thecoders.domain.User;
+import ro.ubbcluj.map.thecoders.services.Service;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class RegisterController implements Initializable {
+    Service service;
 
     @FXML
     private TextField firstnameTextField;
@@ -39,6 +46,17 @@ public class RegisterController implements Initializable {
     @FXML
     private Label confirmPasswordLabel;
 
+    public void setService(Service serviceU) {
+        service = serviceU;
+        initModel();
+    }
+
+    private void initModel() {
+        Iterable<User> users = service.getAll();
+        List<User> userList = StreamSupport.stream(users.spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         File tickFile = new File("Images/tick.png");
@@ -49,6 +67,7 @@ public class RegisterController implements Initializable {
     public void registerButtonOnAction(ActionEvent event){
         if(setPasswordField.getText().equals(confirmPasswordField.getText())){
             registerUser();
+
             registrationMessageLabel.setText("User has been registered successfully!");
             confirmPasswordLabel.setText("Password match!");
         }

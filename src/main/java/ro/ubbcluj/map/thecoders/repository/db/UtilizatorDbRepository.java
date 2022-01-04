@@ -30,9 +30,9 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
         this.validator = validator;
         entities = new HashMap<>();
         messages = new HashMap<>();
-       // load();
-      //  loadFriends();
-       // loadMessages();
+        load();
+        loadFriends();
+        loadMessages();
     }
 
     /**

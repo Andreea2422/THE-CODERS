@@ -1,4 +1,4 @@
-package ro.ubbcluj.map.thecoders;
+package ro.ubbcluj.map.thecoders.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

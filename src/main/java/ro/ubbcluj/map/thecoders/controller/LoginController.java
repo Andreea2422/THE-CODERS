@@ -1,4 +1,4 @@
-package ro.ubbcluj.map.thecoders;
+package ro.ubbcluj.map.thecoders.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ro.ubbcluj.map.thecoders.JavaPostgresSQL;
+import ro.ubbcluj.map.thecoders.Main;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.domain.validators.UserValidator;
 import ro.ubbcluj.map.thecoders.domain.validators.ValidationException;
@@ -23,10 +25,7 @@ import ro.ubbcluj.map.thecoders.repository.file.UserFile;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -55,7 +54,7 @@ public class LoginController implements Initializable {
          lockImageView.setImage(lockImage);
     }
 
-   public void loginButtonOnAction(ActionEvent event) throws SQLException {
+   public void loginButtonOnAction(ActionEvent event) throws SQLException, IOException {
        if(usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false){
            validateLogin();
        }
@@ -74,35 +73,45 @@ public class LoginController implements Initializable {
    }
 
    public void validateLogin() throws SQLException {
-   //   JavaPostgresSQL.findIntoDatabase(usernameTextField.getText(),enterPasswordField.getText());
+      JavaPostgresSQL.findIntoDatabase(usernameTextField.getText(),enterPasswordField.getText());
 
        Repository<Long,User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
-      // var user = repository.findOneByUsername(usernameTextField.getText(), enterPasswordField.getText());
-      var user = repository.findOne(2L);
-       if(user == null){
-           loginMessageLabel.setText("Invalid login. Please try again!");
-       }else{
-           loginMessageLabel.setText("Congratulations!");
-       }
+       var user = repository.findOneByUsername(usernameTextField.getText(), enterPasswordField.getText());
+//      var user = repository.findOne(2L);
+//       if(user == null){
+//           loginMessageLabel.setText("Invalid login. Please try again!");
+//       }else{
+//           loginMessageLabel.setText("Congratulations!");
+//       }
 
-       //         DatabaseConnection connectNow = new DatabaseConnection();
+//       DatabaseConnection connectNow = new DatabaseConnection();
 //         Connection connectDB = connectNow.getConnection();
-//
-//         String verifyLogin = "SELECT count(1) FROM users WHERE user_name = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() +"'";
-//         try{
-//             Statement statement = connectDB.createStatement();
-//             ResultSet queryResult = statement.executeQuery(verifyLogin);
-//             while(queryResult.next()){
-//                 if(queryResult.getInt(1) == 1){
-//                     loginMessageLabel.setText("Congratulations!");
-//                 }else{
-//                     loginMessageLabel.setText("Invalid login. Pleas try again!");
-//                 }
-//             }
-//         }catch(Exception e){
-//             e.printStackTrace();
-//             e.getCause();
-//         }
+       String username = "postgres";
+       String password = "1234";
+       String url = "jdbc:postgresql://localhost:5432/academic";
+       Connection connectDB = DriverManager.getConnection(url, username, password);
+
+         String verifyLogin = "SELECT count(1) FROM users WHERE user_name = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() +"'";
+         try{
+             Statement statement = connectDB.createStatement();
+             ResultSet queryResult = statement.executeQuery(verifyLogin);
+             while(queryResult.next()){
+                 if(queryResult.getInt(1) == 1){
+                     loginMessageLabel.setText("Congratulations!");
+                     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("users-view.fxml"));
+                     Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+                     Stage registerStage = new Stage();
+                     registerStage.initStyle(StageStyle.UNDECORATED);
+                     registerStage.setScene(scene);
+                     registerStage.show();
+                 }else{
+                     loginMessageLabel.setText("Invalid login. Pleas try again!");
+                 }
+             }
+         }catch(Exception e){
+             e.printStackTrace();
+             e.getCause();
+         }
    }
 
    public void createAccountForm(){

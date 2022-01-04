@@ -1,4 +1,4 @@
-package ro.ubb.map.demogui.services.config;
+package ro.ubbcluj.map.thecoders.services.config;
 
 import java.io.FileReader;
 import java.io.IOException;
