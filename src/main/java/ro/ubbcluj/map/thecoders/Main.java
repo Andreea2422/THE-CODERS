@@ -9,6 +9,7 @@ import ro.ubbcluj.map.thecoders.controller.UsersController;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.domain.validators.UserValidator;
 import ro.ubbcluj.map.thecoders.repository.db.UtilizatorDbRepository;
+import ro.ubbcluj.map.thecoders.repository.file.UserFile;
 import ro.ubbcluj.map.thecoders.repository.paging.PagingRepository;
 import ro.ubbcluj.map.thecoders.services.Service;
 
@@ -30,18 +31,19 @@ public class Main extends Application {
 //        repository = new UserFile(fileNameUsers, fileNameFriendships, new UserValidator());
         repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
         service = new Service(repository);
+
         initView(stage);
         stage.show();
     }
 
     private void initView(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/ro/ubbcluj/map/thecoders/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 520, 400);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
 
-     //   UsersController usersController = fxmlLoader.getController();
-     //  usersController.setService(service);
+        UsersController usersController = fxmlLoader.getController();
+        usersController.setService(service);
     }
 
 }

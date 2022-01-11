@@ -54,6 +54,7 @@ public class LoginController implements Initializable {
          lockImageView.setImage(lockImage);
     }
 
+
    public void loginButtonOnAction(ActionEvent event) throws SQLException, IOException {
        if(usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false){
            validateLogin();

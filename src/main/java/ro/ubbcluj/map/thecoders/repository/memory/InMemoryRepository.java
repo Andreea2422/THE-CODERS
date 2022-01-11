@@ -52,12 +52,12 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements PagingRepos
         List<E> list = new ArrayList<>();
         User user = (User) findOne(id);
         if (user!=null) {
-            System.out.println("User: " + user.getFirstName() + " " + user.getLastName());
-            System.out.println("-- Lista de prieteni --");
+//            System.out.println("User: " + user.getFirstName() + " " + user.getLastName());
+//            System.out.println("-- Lista de prieteni --");
             for (User friend : user.getFriends()) {
-                System.out.println("User: " + friend.getFirstName() + " " + friend.getLastName());
-//                User userFriend = (User) findOne((ID) friend.getId());
-//                list.add((E) userFriend);
+                //System.out.println("User: " + friend.getFirstName() + " " + friend.getLastName());
+                User userFriend = (User) findOne((ID) friend.getId());
+                list.add((E) userFriend);
             }
         }
         return list;
@@ -230,8 +230,8 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements PagingRepos
     }
 
     @Override
-    public boolean findOneByUsername(String user_name, String password) {
-        return false;
+    public E findOneByUsername(String user_name, String password) {
+        return entities.get(user_name);
     }
 
     @Override

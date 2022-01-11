@@ -15,7 +15,7 @@
                   <TableView fx:id="tableView" prefHeight="398.0" prefWidth="408.0">
                     <columns>
                       <TableColumn fx:id="tableColumnFirstName" prefWidth="196.79999083280563" text="FirstName" />
-                      <TableColumn fx:id="tableColumnLastName" minWidth="0.0" prefWidth="261.6000518798828" text="LastName" />
+                      <TableColumn fx:id="tableColumnLastName" minWidth="0.0" prefWidth="210.40000915527344" text="LastName" />
                     </columns>
                   </TableView>
                </children>

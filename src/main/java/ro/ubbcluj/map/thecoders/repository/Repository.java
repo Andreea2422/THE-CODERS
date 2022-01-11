@@ -100,5 +100,5 @@ public interface Repository<ID, E extends Entity<ID>> {
      *      *           username must not be null
      * @return the entity with the specified username
      */
-    public boolean findOneByUsername(String user_name, String password);
+    E findOneByUsername(String user_name, String password);
 }

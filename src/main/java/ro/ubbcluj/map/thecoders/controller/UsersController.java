@@ -1,5 +1,7 @@
 package ro.ubbcluj.map.thecoders.controller;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.services.Service;
 import ro.ubbcluj.map.thecoders.utils.events.UserChangeEvent;
@@ -26,6 +29,7 @@ import java.util.stream.StreamSupport;
 public class UsersController implements Observer<UserChangeEvent>{
     Service service;
     ObservableList<User> model = FXCollections.observableArrayList();
+    private String username;
 
     @FXML
     private Button signOutButton;
@@ -45,18 +49,44 @@ public class UsersController implements Observer<UserChangeEvent>{
         initModel();
     }
 
-    @FXML
-    public void initialize(){
-        tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<User, String>("FirstName"));
-        tableColumnLastName.setCellValueFactory(new PropertyValueFactory<User, String>("LastName"));
-        tableView.setItems(model);
+    public void setLoggedUsername(String loggedUsername) {
+        this.username = loggedUsername;
     }
 
+
+    @FXML
+    public void initialize() throws Exception {
+        //tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<User, String>("FirstName"));
+        //tableColumnLastName.setCellValueFactory(new PropertyValueFactory<User, String>("LastName"));
+
+        tableColumnFirstName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getFirstName());
+            }
+        });
+
+        tableColumnLastName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getLastName());
+            }
+        });
+
+        tableView.setItems(model);
+
+    }
+
+
     private void initModel() {
-        Iterable<User> users = service.getAll();
-        List<User> userList = StreamSupport.stream(users.spliterator(), false)
-                .collect(Collectors.toList());
-        model.setAll(userList);
+        //de modificat
+
+//        Iterable<User> users = service.allFriendsForOneUser(username);
+//        List<User> userList = StreamSupport.stream(users.spliterator(), false)
+//                .collect(Collectors.toList());
+//        model.setAll(userList);
+
+        model.setAll(service.allFriendsForOneUser(1));
     }
 
 

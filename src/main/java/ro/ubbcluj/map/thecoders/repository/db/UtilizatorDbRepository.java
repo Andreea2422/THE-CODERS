@@ -604,27 +604,26 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
      * @return the entity with the specified username
      */
     @Override
-    public boolean findOneByUsername(String user_name, String pwd) {
+    public E findOneByUsername(String user_name, String pwd) {
         String sql = "SELECT * FROM users WHERE user_name = " + user_name + " AND password = " + pwd;
         try(Connection connection = DriverManager.getConnection(url, username, password);
             PreparedStatement ps = connection.prepareStatement(sql)){
             ResultSet resultSet = ps.executeQuery();
 
             if (resultSet.next()) {
-               // String firstName = resultSet.getString("first_name");
-               // String lastName = resultSet.getString("last_name");
-                //Long id = resultSet.getLong("id");
+                    String firstName = resultSet.getString("first_name");
+                    String lastName = resultSet.getString("last_name");
 
-               // User user = new User(firstName, lastName);
-              //  user.setId(id);
-               // return entities.get(user.getId());
-                return true;
+                    User utilizator = new User(firstName, lastName);
+                    utilizator.setId(resultSet.getLong("id"));
+                    return entities.get(utilizator.getId());
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+            return null;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     @Override
