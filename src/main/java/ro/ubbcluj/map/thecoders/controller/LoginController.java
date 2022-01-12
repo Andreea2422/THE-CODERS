@@ -30,54 +30,54 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-   @FXML
-   private Button cancelButton;
-   @FXML
-   private Label loginMessageLabel;
-   @FXML
-   private ImageView logoImageView;
-   @FXML
-   private ImageView lockImageView;
-   @FXML
-   private TextField usernameTextField;
-   @FXML
-   private PasswordField enterPasswordField;
+    @FXML
+    private Button cancelButton;
+    @FXML
+    private Label loginMessageLabel;
+    @FXML
+    private ImageView logoImageView;
+    @FXML
+    private ImageView lockImageView;
+    @FXML
+    private TextField usernameTextField;
+    @FXML
+    private PasswordField enterPasswordField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-         File logoFile = new File("Images/logo.png");
-         Image logoImage = new Image(logoFile.toURI().toString());
-         logoImageView.setImage(logoImage);
+        File logoFile = new File("Images/logo.png");
+        Image logoImage = new Image(logoFile.toURI().toString());
+        logoImageView.setImage(logoImage);
 
-         File lockFile = new File("Images/lock.png");
-         Image lockImage = new Image(lockFile.toURI().toString());
-         lockImageView.setImage(lockImage);
+        File lockFile = new File("Images/lock.png");
+        Image lockImage = new Image(lockFile.toURI().toString());
+        lockImageView.setImage(lockImage);
     }
 
 
-   public void loginButtonOnAction(ActionEvent event) throws SQLException, IOException {
-       if(usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false){
-           validateLogin();
-       }
-       else{
-           loginMessageLabel.setText("Please enter username and password");
-       }
-   }
+    public void loginButtonOnAction(ActionEvent event) throws SQLException, IOException {
+        if(usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false){
+            validateLogin();
+        }
+        else{
+            loginMessageLabel.setText("Please enter username and password");
+        }
+    }
 
-   public void signupButtonOnAction(ActionEvent event){
-       createAccountForm();
-   }
+    public void signupButtonOnAction(ActionEvent event){
+        createAccountForm();
+    }
 
-   public void cancelButtonOnAction(ActionEvent event){
-       Stage stage = (Stage) cancelButton.getScene().getWindow();
-       stage.close();
-   }
+    public void cancelButtonOnAction(ActionEvent event){
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
+    }
 
-   public void validateLogin() throws SQLException {
-      JavaPostgresSQL.findIntoDatabase(usernameTextField.getText(),enterPasswordField.getText());
+    public void validateLogin() throws SQLException {
+        JavaPostgresSQL.findIntoDatabase(usernameTextField.getText(),enterPasswordField.getText());
 
-       Repository<Long,User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
-       var user = repository.findOneByUsername(usernameTextField.getText(), enterPasswordField.getText());
+        Repository<Long,User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
+        var user = repository.findOneByUsername(usernameTextField.getText(), enterPasswordField.getText());
 //      var user = repository.findOne(2L);
 //       if(user == null){
 //           loginMessageLabel.setText("Invalid login. Please try again!");
@@ -87,35 +87,35 @@ public class LoginController implements Initializable {
 
 //       DatabaseConnection connectNow = new DatabaseConnection();
 //         Connection connectDB = connectNow.getConnection();
-       String username = "postgres";
-       String password = "1234";
-       String url = "jdbc:postgresql://localhost:5432/academic";
-       Connection connectDB = DriverManager.getConnection(url, username, password);
+        String username = "postgres";
+        String password = "1234";
+        String url = "jdbc:postgresql://localhost:5432/academic";
+        Connection connectDB = DriverManager.getConnection(url, username, password);
 
-         String verifyLogin = "SELECT count(1) FROM users WHERE user_name = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() +"'";
-         try{
-             Statement statement = connectDB.createStatement();
-             ResultSet queryResult = statement.executeQuery(verifyLogin);
-             while(queryResult.next()){
-                 if(queryResult.getInt(1) == 1){
-                     loginMessageLabel.setText("Congratulations!");
-                     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("users-view.fxml"));
-                     Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-                     Stage registerStage = new Stage();
-                     registerStage.initStyle(StageStyle.UNDECORATED);
-                     registerStage.setScene(scene);
-                     registerStage.show();
-                 }else{
-                     loginMessageLabel.setText("Invalid login. Pleas try again!");
-                 }
-             }
-         }catch(Exception e){
-             e.printStackTrace();
-             e.getCause();
-         }
-   }
+        String verifyLogin = "SELECT count(1) FROM users WHERE user_name = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() +"'";
+        try{
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(verifyLogin);
+            while(queryResult.next()){
+                if(queryResult.getInt(1) == 1){
+                    loginMessageLabel.setText("Congratulations!");
+                    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("users-view.fxml"));
+                    Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+                    Stage registerStage = new Stage();
+                    registerStage.initStyle(StageStyle.UNDECORATED);
+                    registerStage.setScene(scene);
+                    registerStage.show();
+                }else{
+                    loginMessageLabel.setText("Invalid login. Pleas try again!");
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
 
-   public void createAccountForm(){
+    public void createAccountForm(){
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("register-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 520, 400);
@@ -126,5 +126,5 @@ public class LoginController implements Initializable {
         }catch(Exception e){
             e.printStackTrace();
         }
-   }
+    }
 }

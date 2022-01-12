@@ -507,7 +507,7 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
             while (resultSet.next()) {
                 Long id = resultSet.getLong("id");
                 System.out.println(messages.get(id).getFrom().getFirstName() +" "+ messages.get(id).getFrom().getLastName()
-                            + "\n" + messages.get(id).getMessage() + " | " + messages.get(id).getData() + "\n");
+                        + "\n" + messages.get(id).getMessage() + " | " + messages.get(id).getData() + "\n");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -611,18 +611,18 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
             ResultSet resultSet = ps.executeQuery();
 
             if (resultSet.next()) {
-                    String firstName = resultSet.getString("first_name");
-                    String lastName = resultSet.getString("last_name");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
 
-                    User utilizator = new User(firstName, lastName);
-                    utilizator.setId(resultSet.getLong("id"));
-                    return entities.get(utilizator.getId());
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
+                User utilizator = new User(firstName, lastName);
+                utilizator.setId(resultSet.getLong("id"));
+                return entities.get(utilizator.getId());
             }
-            return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
 
     }
 
