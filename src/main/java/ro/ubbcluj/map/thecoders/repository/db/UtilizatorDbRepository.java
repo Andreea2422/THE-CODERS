@@ -605,7 +605,7 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
      */
     @Override
     public E findOneByUsername(String user_name, String pwd) {
-        String sql = "SELECT * FROM users WHERE user_name = " + user_name + " AND password = " + pwd;
+        String sql = "SELECT * FROM users WHERE user_name = '" + user_name + "' AND password = '" + pwd +"'";
         try(Connection connection = DriverManager.getConnection(url, username, password);
             PreparedStatement ps = connection.prepareStatement(sql)){
             ResultSet resultSet = ps.executeQuery();
@@ -624,6 +624,36 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
         }
         return null;
 
+    }
+
+    /**
+     * Throws RepoException if the entity is null
+     * @param entity The User that we want to save
+     *         entity must be not null
+     * @return The entity if one is already existing in the repository, null otherwise
+     */
+    @Override
+    public E saveUser(E entity) {
+        validator.validate(entity);
+        String sql = "insert into users (id, first_name, last_name, user_name, password ) values (?, ?, ?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            User user = (User) entity;
+            ps.setLong(1, user.getId());
+            ps.setString(2, user.getFirstName());
+            ps.setString(3, user.getLastName());
+            ps.setString(3, user.getUserName());
+            ps.setString(3, user.getPassword());
+
+            ps.executeUpdate();
+            load();
+            loadFriends();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

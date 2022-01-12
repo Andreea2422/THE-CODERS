@@ -1,21 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.ubbcluj.map.thecoders.controller.FunctionalitiesController">
    <left>
       <AnchorPane prefHeight="366.0" prefWidth="134.0" style="-fx-background-color: #EDA83B;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="120.0" fitWidth="139.0" layoutX="8.0" layoutY="-31.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="logoImageView" fitHeight="99.0" fitWidth="120.0" layoutX="18.0" layoutY="-23.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../Downloads/Images/logo.png" />
+                  <Image url="@../../../../../../../Images/logo.png" />
                </image>
             </ImageView>
+            <Button layoutX="4.0" layoutY="74.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Profile">
+               <font>
+                  <Font size="13.0" />
+               </font></Button>
+            <ImageView fx:id="userImageView" fitHeight="13.0" fitWidth="16.0" layoutX="32.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../Images/user.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="usersButton" layoutX="4.0" layoutY="109.0" mnemonicParsing="false" onAction="#usersButtonOnAction" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Users">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Button>
+            <ImageView fx:id="groupImageView" fitHeight="17.0" fitWidth="16.0" layoutX="27.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../Images/group.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="4.0" layoutY="143.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Chats">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Button>
+            <ImageView fx:id="chatsImageView" fitHeight="25.0" fitWidth="28.0" layoutX="26.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../Images/chats.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="signOutButton" layoutX="4.0" layoutY="320.0" mnemonicParsing="false" onAction="#signOutButtonOnAction" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Sing out">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </left>

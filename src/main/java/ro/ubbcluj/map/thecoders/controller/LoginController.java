@@ -21,6 +21,7 @@ import ro.ubbcluj.map.thecoders.domain.validators.ValidationException;
 import ro.ubbcluj.map.thecoders.repository.Repository;
 import ro.ubbcluj.map.thecoders.repository.db.UtilizatorDbRepository;
 import ro.ubbcluj.map.thecoders.repository.file.UserFile;
+import ro.ubbcluj.map.thecoders.services.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +30,10 @@ import java.sql.*;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+
+    private User user;
+    Repository<Long,User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
+    Service service = new Service(repository);
 
     @FXML
     private Button cancelButton;
@@ -42,6 +47,9 @@ public class LoginController implements Initializable {
     private TextField usernameTextField;
     @FXML
     private PasswordField enterPasswordField;
+
+    public LoginController() throws SQLException {
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,45 +82,17 @@ public class LoginController implements Initializable {
     }
 
     public void validateLogin() throws SQLException {
-        JavaPostgresSQL.findIntoDatabase(usernameTextField.getText(),enterPasswordField.getText());
+        // JavaPostgresSQL.findIntoDatabase(usernameTextField.getText(),enterPasswordField.getText());
 
-        Repository<Long,User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
-        var user = repository.findOneByUsername(usernameTextField.getText(), enterPasswordField.getText());
-//      var user = repository.findOne(2L);
-//       if(user == null){
-//           loginMessageLabel.setText("Invalid login. Please try again!");
-//       }else{
-//           loginMessageLabel.setText("Congratulations!");
-//       }
+        user = repository.findOneByUsername(usernameTextField.getText(), enterPasswordField.getText());
 
-//       DatabaseConnection connectNow = new DatabaseConnection();
-//         Connection connectDB = connectNow.getConnection();
-        String username = "postgres";
-        String password = "1234";
-        String url = "jdbc:postgresql://localhost:5432/academic";
-        Connection connectDB = DriverManager.getConnection(url, username, password);
-
-        String verifyLogin = "SELECT count(1) FROM users WHERE user_name = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() +"'";
-        try{
-            Statement statement = connectDB.createStatement();
-            ResultSet queryResult = statement.executeQuery(verifyLogin);
-            while(queryResult.next()){
-                if(queryResult.getInt(1) == 1){
-                    loginMessageLabel.setText("Congratulations!");
-                    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("users-view.fxml"));
-                    Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-                    Stage registerStage = new Stage();
-                    registerStage.initStyle(StageStyle.UNDECORATED);
-                    registerStage.setScene(scene);
-                    registerStage.show();
-                }else{
-                    loginMessageLabel.setText("Invalid login. Pleas try again!");
-                }
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-            e.getCause();
+        if(user == null){
+            loginMessageLabel.setText("Invalid login. Please try again!");
+        }else{
+            loginMessageLabel.setText("Congratulations!");
+            Functionalities();
         }
+
     }
 
     public void createAccountForm(){
@@ -122,6 +102,24 @@ public class LoginController implements Initializable {
             Stage registerStage = new Stage();
             registerStage.initStyle(StageStyle.UNDECORATED);
             registerStage.setScene(scene);
+            registerStage.show();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void Functionalities(){
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/ro/ubbcluj/map/thecoders/functionalities-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+            Stage registerStage = new Stage();
+            registerStage.initStyle(StageStyle.UNDECORATED);
+            registerStage.setScene(scene);
+
+            FunctionalitiesController functionalitiesController = fxmlLoader.getController();
+            functionalitiesController.setService(service);
+            functionalitiesController.setUser(user);
             registerStage.show();
         }catch(Exception e){
             e.printStackTrace();

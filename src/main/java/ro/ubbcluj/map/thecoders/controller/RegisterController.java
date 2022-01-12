@@ -13,10 +13,14 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import ro.ubbcluj.map.thecoders.JavaPostgresSQL;
 import ro.ubbcluj.map.thecoders.domain.User;
+import ro.ubbcluj.map.thecoders.domain.validators.UserValidator;
+import ro.ubbcluj.map.thecoders.repository.Repository;
+import ro.ubbcluj.map.thecoders.repository.db.UtilizatorDbRepository;
 import ro.ubbcluj.map.thecoders.services.Service;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -46,6 +50,9 @@ public class RegisterController implements Initializable {
     @FXML
     private Label confirmPasswordLabel;
 
+    public RegisterController() throws SQLException {
+    }
+
     public void setService(Service serviceU) {
         service = serviceU;
         initModel();
@@ -64,7 +71,7 @@ public class RegisterController implements Initializable {
         tickImageView.setImage(tickImage);
     }
 
-    public void registerButtonOnAction(ActionEvent event){
+    public void registerButtonOnAction(ActionEvent event) throws SQLException {
         if(setPasswordField.getText().equals(confirmPasswordField.getText())){
             registerUser();
 
@@ -82,10 +89,16 @@ public class RegisterController implements Initializable {
         //Platform.exit(); //se inchid amadoua feresterele - aici nu am nevoie
     }
 
-    public void registerUser(){
-        JavaPostgresSQL.writeToDatabase(firstnameTextField.getText(),
-                lastnameTextField.getText(),
-                usernameTextField.getText(),
-                setPasswordField.getText());
+    public void registerUser() throws SQLException {
+//        JavaPostgresSQL.writeToDatabase(firstnameTextField.getText(),
+//                lastnameTextField.getText(),
+//                usernameTextField.getText(),
+//                setPasswordField.getText());
+//        Repository<Long,User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
+//        User user = new User(firstnameTextField.getText(),
+//                lastnameTextField.getText(),
+//                usernameTextField.getText(),
+//                setPasswordField.getText());
+//        repository.saveUser(user);
     }
 }

@@ -15,7 +15,7 @@
          <children>
             <ImageView fx:id="tickImageView" fitHeight="37.0" fitWidth="40.0" layoutX="28.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../Downloads/Images/tick.png" />
+                  <Image url="@../../../../../../../../../../Downloads/Images/tick.png" />
                </image>
             </ImageView>
             <Label layoutX="97.0" layoutY="17.0" prefHeight="52.0" prefWidth="163.0" text="User Registration" textFill="WHITE">

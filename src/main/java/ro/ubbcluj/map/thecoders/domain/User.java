@@ -8,12 +8,22 @@ import java.util.Objects;
 public class User extends Entity<Long> {
     private String firstName;
     private String lastName;
+    private String userName;
+    private String password;
     private Date date;
     private List<User> friends;
 
     public User(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        friends = new ArrayList<>();
+    }
+
+    public User(String firstName, String lastName, String userName, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
         friends = new ArrayList<>();
     }
 
@@ -49,6 +59,7 @@ public class User extends Entity<Long> {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
 
     /**
      * Getter for the list of friends
@@ -140,5 +151,21 @@ public class User extends Entity<Long> {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
