@@ -2,6 +2,7 @@ package ro.ubbcluj.map.thecoders;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -21,6 +22,7 @@ public class Main extends Application {
     PagingRepository<Long, User> repository;
     Service service;
 
+    double x,y=0;
     public static void main(String[] args) {
         launch();
     }
@@ -37,13 +39,26 @@ public class Main extends Application {
     }
 
     private void initView(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/ro/ubbcluj/map/thecoders/login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/ro/ubbcluj/map/thecoders/login-view.fxml"));
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root, 520, 400);
         stage.initStyle(StageStyle.UNDECORATED);
+
+        //move around
+//        root.setOnMousePressed(evt -> {
+//              x = evt.getSceneX();
+//              y = evt.getSceneY();
+//        });
+//        root.setOnMousePressed(evt -> {
+//              stage.setX(evt.getScreenX()- x);
+//              stage.setY(evt.getScreenY()- y);
+//        });
+
         stage.setScene(scene);
 
-        UsersController usersController = fxmlLoader.getController();
-        usersController.setService(service);
+//        UsersController usersController = fxmlLoader.getController();
+//        usersController.setService(service);
     }
 
 }

@@ -22,6 +22,7 @@ import ro.ubbcluj.map.thecoders.utils.events.UserChangeEvent;
 import ro.ubbcluj.map.thecoders.utils.observer.Observer;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -30,13 +31,16 @@ public class UsersController implements Observer<UserChangeEvent>{
     Service service;
     ObservableList<User> model = FXCollections.observableArrayList();
     private String username;
+    private User user;
 
     @FXML
     private Button signOutButton;
     @FXML
-    TableView<User> tableView;
+    private Button addButton;
     @FXML
-    TableColumn<User, String> tableColumnUserName;
+    private Button removeButton;
+    @FXML
+    TableView<User> tableView;
     @FXML
     TableColumn<User, String> tableColumnFirstName;
     @FXML
@@ -56,9 +60,6 @@ public class UsersController implements Observer<UserChangeEvent>{
 
     @FXML
     public void initialize() throws Exception {
-        //tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<User, String>("FirstName"));
-        //tableColumnLastName.setCellValueFactory(new PropertyValueFactory<User, String>("LastName"));
-
         tableColumnFirstName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
@@ -79,14 +80,10 @@ public class UsersController implements Observer<UserChangeEvent>{
 
 
     private void initModel() {
-        //de modificat
-
-//        Iterable<User> users = service.allFriendsForOneUser(username);
-//        List<User> userList = StreamSupport.stream(users.spliterator(), false)
-//                .collect(Collectors.toList());
-//        model.setAll(userList);
-
-        model.setAll(service.allFriendsForOneUser(1));
+        Iterable<User> users = service.getAll();
+        List<User> usersList = StreamSupport.stream(users.spliterator(), false)
+                .collect(Collectors.toList());
+        model.setAll(usersList);
     }
 
 
@@ -99,5 +96,21 @@ public class UsersController implements Observer<UserChangeEvent>{
     public void signOutButtonOnAction(ActionEvent event){
         Stage stage = (Stage) signOutButton.getScene().getWindow();
         stage.close();
+    }
+
+    public void addButtonOnAction(ActionEvent event) throws IOException {
+        User selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            service.addFriendServ(user.getId(),selected.getId());
+
+        } else
+            MessageAlert.showErrorMessage(null, "NU ati selectat nici un student");
+
+    }
+
+    public void removeButtonOnAction(ActionEvent event){}
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

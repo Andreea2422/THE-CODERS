@@ -235,6 +235,11 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements PagingRepos
     }
 
     @Override
+    public E saveUser(E entity) {
+        return null;
+    }
+
+    @Override
     public void sendFriendshipRequest(ID idUser, ID idFriend) {
 
     }

@@ -101,4 +101,17 @@ public interface Repository<ID, E extends Entity<ID>> {
      * @return the entity with the specified username
      */
     E findOneByUsername(String user_name, String password);
+
+    /**
+     *
+     * @param entity
+     *         entity must be not null
+     * @return null- if the given entity is saved
+     *         otherwise returns the entity (id already exists)
+     * @throws ValidationException
+     *            if the entity is not valid
+     * @throws IllegalArgumentException
+     *             if the given entity is null.     *
+     */
+    E saveUser(E entity);
 }

@@ -10,19 +10,22 @@
    <children>
       <SplitPane dividerPositions="0.6854946524064169" layoutX="-3.0" layoutY="-4.0" prefHeight="400.0" prefWidth="600.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="430.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="444.0">
                <children>
-                  <TableView fx:id="tableView" prefHeight="398.0" prefWidth="408.0">
+                  <TableView fx:id="tableView" prefHeight="398.0" prefWidth="407.0">
                     <columns>
-                      <TableColumn fx:id="tableColumnFirstName" prefWidth="196.79999083280563" text="FirstName" />
-                      <TableColumn fx:id="tableColumnLastName" minWidth="0.0" prefWidth="210.40000915527344" text="LastName" />
+                      <TableColumn fx:id="tableColumnFirstName" prefWidth="131.20001524686813" text="FirstName" />
+                      <TableColumn fx:id="tableColumnLastName" minWidth="0.0" prefWidth="137.59999084472656" text="LastName" />
+                        <TableColumn prefWidth="137.59999389648436" text="Status" />
                     </columns>
                   </TableView>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="141.0">
                <children>
-                  <Button fx:id="signOutButton" layoutX="31.0" layoutY="346.0" mnemonicParsing="false" onAction="#signOutButtonOnAction" text="Sign Out" />
+                  <Button fx:id="signOutButton" layoutX="40.0" layoutY="344.0" mnemonicParsing="false" onAction="#signOutButtonOnAction" text="Sign Out" />
+                  <Button fx:id="addButton" layoutX="40.0" layoutY="288.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="26.0" prefWidth="62.0" text="add" />
+                  <Button fx:id="removeButton" layoutX="40.0" layoutY="238.0" mnemonicParsing="false" onAction="#removeButtonOnAction" prefHeight="26.0" prefWidth="62.0" text="remove" />
                </children></AnchorPane>
         </items>
       </SplitPane>
