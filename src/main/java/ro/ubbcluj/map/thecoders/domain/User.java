@@ -13,11 +13,11 @@ public class User extends Entity<Long> {
     private Date date;
     private List<User> friends;
 
-    public User(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        friends = new ArrayList<>();
-    }
+//    public User(String firstName, String lastName) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        friends = new ArrayList<>();
+//    }
 
     public User(String firstName, String lastName, String userName, String password) {
         this.firstName = firstName;

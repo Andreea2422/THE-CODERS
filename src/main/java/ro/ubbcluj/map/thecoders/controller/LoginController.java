@@ -20,7 +20,6 @@ import ro.ubbcluj.map.thecoders.domain.validators.UserValidator;
 import ro.ubbcluj.map.thecoders.domain.validators.ValidationException;
 import ro.ubbcluj.map.thecoders.repository.Repository;
 import ro.ubbcluj.map.thecoders.repository.db.UtilizatorDbRepository;
-import ro.ubbcluj.map.thecoders.repository.file.UserFile;
 import ro.ubbcluj.map.thecoders.services.Service;
 
 import java.io.File;

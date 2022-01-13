@@ -36,7 +36,7 @@
                   <Image url="@../../../../../../../Images/group.png" />
                </image>
             </ImageView>
-            <Button layoutX="4.0" layoutY="143.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Chats">
+            <Button fx:id="chatsButton" layoutX="4.0" layoutY="143.0" mnemonicParsing="false" onAction="#chatsButtonOnAction" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Chats">
                <font>
                   <Font size="13.0" />
                </font>
@@ -46,7 +46,7 @@
                   <Image url="@../../../../../../../Images/chats.png" />
                </image>
             </ImageView>
-            <Button fx:id="signOutButton" layoutX="4.0" layoutY="320.0" mnemonicParsing="false" onAction="#signOutButtonOnAction" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Sing out">
+            <Button fx:id="signOutButton" layoutX="4.0" layoutY="320.0" mnemonicParsing="false" onAction="#signOutButtonOnAction" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Sign out">
                <font>
                   <Font size="13.0" />
                </font>

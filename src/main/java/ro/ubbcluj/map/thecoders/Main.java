@@ -10,7 +10,6 @@ import ro.ubbcluj.map.thecoders.controller.UsersController;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.domain.validators.UserValidator;
 import ro.ubbcluj.map.thecoders.repository.db.UtilizatorDbRepository;
-import ro.ubbcluj.map.thecoders.repository.file.UserFile;
 import ro.ubbcluj.map.thecoders.repository.paging.PagingRepository;
 import ro.ubbcluj.map.thecoders.services.Service;
 

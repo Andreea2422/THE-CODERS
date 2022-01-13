@@ -51,8 +51,10 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
             if (resultSet.next()) {
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
+                String username = resultSet.getString("user_name");
+                String password = resultSet.getString("password");
 
-                User utilizator = new User(firstName, lastName);
+                User utilizator = new User(firstName, lastName, username, password);
                 utilizator.setId(resultSet.getLong("id"));
                 return entities.get(utilizator.getId());
             }
@@ -77,8 +79,10 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
             Long id = resultSet.getLong("id");
             String firstName = resultSet.getString("first_name");
             String lastName = resultSet.getString("last_name");
+            String username = resultSet.getString("user_name");
+            String password = resultSet.getString("password");
 
-            User utilizator = new User(firstName, lastName);
+            User utilizator = new User(firstName, lastName, username, password);
             utilizator.setId(id);
             entities.put((ID) id, (E) utilizator);
         }
@@ -144,8 +148,10 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
                 Long id = resultSet.getLong("id");
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
+                String username = resultSet.getString("user_name");
+                String password = resultSet.getString("password");
 
-                User utilizator = new User(firstName, lastName);
+                User utilizator = new User(firstName, lastName, username, password);
                 utilizator.setId(id);
                 users.add((E) utilizator);
             }
@@ -167,7 +173,7 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
     @Override
     public E save(E entity) {
         validator.validate(entity);
-        String sql = "insert into users (id, first_name, last_name ) values (?, ?, ?)";
+        String sql = "insert into users (id, first_name, last_name, user_name, password) values (?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -176,6 +182,8 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
             ps.setLong(1, user.getId());
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getLastName());
+            ps.setString(4, user.getUserName());
+            ps.setString(5, user.getPassword());
 
             ps.executeUpdate();
             load();
@@ -613,8 +621,10 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
             if (resultSet.next()) {
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
+                String username = resultSet.getString("user_name");
+                String password = resultSet.getString("password");
 
-                User utilizator = new User(firstName, lastName);
+                User utilizator = new User(firstName, lastName, username, password);
                 utilizator.setId(resultSet.getLong("id"));
                 return entities.get(utilizator.getId());
             }

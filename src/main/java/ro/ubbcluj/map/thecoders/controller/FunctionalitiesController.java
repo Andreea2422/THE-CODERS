@@ -3,6 +3,7 @@ package ro.ubbcluj.map.thecoders.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ro.ubbcluj.map.thecoders.Main;
@@ -25,6 +27,8 @@ import ro.ubbcluj.map.thecoders.utils.observer.Observable;
 import ro.ubbcluj.map.thecoders.utils.observer.Observer;
 
 import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -34,10 +38,15 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     ObservableList<User> model = FXCollections.observableArrayList();
     User user;
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     @FXML
     private Button signOutButton;
     @FXML
     private Button usersButton;
+//    @FXML
+//    private Button chatsButton;
     @FXML
     private ImageView logoImageView;
     @FXML
@@ -120,4 +129,40 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     public void setUser(User user) {
         this.user = user;
     }
+
+
+    public void chatsButtonOnAction(ActionEvent event) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/ro/ubbcluj/map/thecoders/chat-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 291, 483);
+        Stage registerStage = new Stage();
+        registerStage.initStyle(StageStyle.UNDECORATED);
+
+        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = registerStage.getX() - event.getScreenX();
+                yOffset = registerStage.getY() - event.getScreenY();
+            }
+        });
+
+        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                registerStage.setX(event.getScreenX() + xOffset);
+                registerStage.setY(event.getScreenY() + yOffset);
+            }
+        });
+
+        Repository<Long, User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
+        service = new Service(repository);
+
+        ChatController chatController = fxmlLoader.getController();
+        chatController.setService(service);
+
+        registerStage.setScene(scene);
+        registerStage.show();
+
+    }
+
+
 }

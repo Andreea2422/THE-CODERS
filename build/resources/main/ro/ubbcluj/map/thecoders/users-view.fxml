@@ -23,7 +23,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="141.0">
                <children>
-                  <Button fx:id="signOutButton" layoutX="40.0" layoutY="344.0" mnemonicParsing="false" onAction="#signOutButtonOnAction" text="Sign Out" />
+                  <Button fx:id="signOutButton" layoutX="40.0" layoutY="344.0" mnemonicParsing="false" onAction="#signOutButtonOnAction" text="Return" />
                   <Button fx:id="addButton" layoutX="40.0" layoutY="288.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="26.0" prefWidth="62.0" text="add" />
                   <Button fx:id="removeButton" layoutX="40.0" layoutY="238.0" mnemonicParsing="false" onAction="#removeButtonOnAction" prefHeight="26.0" prefWidth="62.0" text="remove" />
                </children></AnchorPane>
