@@ -37,7 +37,7 @@ public class ChatController implements Observer<UserChangeEvent> {
     Service service;
     ObservableList<User> model = FXCollections.observableArrayList();
     private String username;
-    private User user;
+    User user;
 
     private double xOffset = 0;
     private double yOffset = 0;
@@ -49,10 +49,7 @@ public class ChatController implements Observer<UserChangeEvent> {
     @FXML
     TableColumn<User, String> tableColumnChats;
 
-    public ChatController() throws SQLException {
-
-    }
-
+    public ChatController() throws SQLException {}
 
     public void setService(Service service){
         this.service = service;
@@ -128,8 +125,14 @@ public class ChatController implements Observer<UserChangeEvent> {
                     }
                 });
 
+                User selected = tableViewChat.getSelectionModel().getSelectedItem();
+
+
                 MsgController msgController = fxmlLoader.getController();
+                msgController.setUser(user);
+                msgController.setFriend(selected);
                 msgController.setService(service);
+
 
                 registerStage.setScene(scene);
                 registerStage.show();

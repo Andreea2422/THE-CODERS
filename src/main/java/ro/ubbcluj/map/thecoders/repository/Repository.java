@@ -1,6 +1,7 @@
 package ro.ubbcluj.map.thecoders.repository;
 
 import ro.ubbcluj.map.thecoders.domain.Entity;
+import ro.ubbcluj.map.thecoders.domain.Message;
 import ro.ubbcluj.map.thecoders.domain.validators.ValidationException;
 
 import java.io.IOException;
@@ -114,4 +115,7 @@ public interface Repository<ID, E extends Entity<ID>> {
      *             if the given entity is null.     *
      */
     E saveUser(E entity);
+
+    Iterable<Message> getAllMessages();
+    Iterable<Message> listMessagesUsers(ID idUser1, ID idUser2);
 }

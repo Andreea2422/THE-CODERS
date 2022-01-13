@@ -158,6 +158,7 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
 
         ChatController chatController = fxmlLoader.getController();
         chatController.setService(service);
+        chatController.setUser(user);
 
         registerStage.setScene(scene);
         registerStage.show();

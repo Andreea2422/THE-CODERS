@@ -47,8 +47,7 @@ public class LoginController implements Initializable {
     @FXML
     private PasswordField enterPasswordField;
 
-    public LoginController() throws SQLException {
-    }
+    public LoginController() throws SQLException {}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -2,6 +2,7 @@ package ro.ubbcluj.map.thecoders.repository.memory;
 
 
 import ro.ubbcluj.map.thecoders.domain.Entity;
+import ro.ubbcluj.map.thecoders.domain.Message;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.domain.validators.ValidationException;
 import ro.ubbcluj.map.thecoders.domain.validators.Validator;
@@ -236,6 +237,16 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements PagingRepos
 
     @Override
     public E saveUser(E entity) {
+        return null;
+    }
+
+    @Override
+    public Iterable<Message> getAllMessages() {
+        return null;
+    }
+
+    @Override
+    public Iterable<Message> listMessagesUsers(ID idUser1, ID idUser2) {
         return null;
     }
 

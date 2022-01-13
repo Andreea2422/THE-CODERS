@@ -520,6 +520,70 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+    }
+
+    @Override
+    public Iterable<Message> getAllMessages() {
+        Set<Message> msg = new HashSet<>();
+        List<User> usersTO = new ArrayList<>();
+        Message replymsg;
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement("SELECT * from messages");
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                Long id1 = resultSet.getLong("id_user1");
+                User user = (User) findOne((ID) id1);
+                Long id2 = resultSet.getLong("id_user2");
+                User user2 = (User) findOne((ID) id2);
+                usersTO.add(user2);
+                String content = resultSet.getString("content");
+                Date date = resultSet.getDate("date");
+
+                Message message = new Message(id, user, usersTO, content, date);
+                replymsg = getReply((ID) id1,(ID) id2,content);
+                message.setReply(replymsg);
+                msg.add(message);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return msg ;
+
+    }
+
+    @Override
+    public Iterable<Message> listMessagesUsers(ID idUser1, ID idUser2) {
+        Set<Message> msg = new HashSet<>();
+        List<User> usersTO = new ArrayList<>();
+        Message replymsg;
+        String sql = "SELECT * FROM messages \n" +
+                " WHERE id_user1 = " + idUser1 + " and id_user2 = " + idUser2 +
+                " or id_user1 = " + idUser2 +  " and id_user2 = " + idUser1 + "ORDER BY date ASC";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                Long id1 = resultSet.getLong("id_user1");
+                User user = (User) findOne((ID) id1);
+                Long id2 = resultSet.getLong("id_user2");
+                User user2 = (User) findOne((ID) id2);
+                usersTO.add(user2);
+                String content = resultSet.getString("content");
+                Date date = resultSet.getDate("date");
+
+                Message message = new Message(id, user, usersTO, content, date);
+                replymsg = getReply((ID) id1,(ID) id2,content);
+                message.setReply(replymsg);
+                msg.add(message);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return msg ;
     }
 
     /**

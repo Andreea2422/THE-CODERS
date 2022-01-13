@@ -1,6 +1,7 @@
 package ro.ubbcluj.map.thecoders.services;
 
 import ro.ubbcluj.map.thecoders.domain.Entity;
+import ro.ubbcluj.map.thecoders.domain.Message;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.repository.Repository;
 import ro.ubbcluj.map.thecoders.repository.paging.Page;
@@ -59,6 +60,14 @@ public class Service<ID, E extends Entity<ID>> implements Observable<UserChangeE
     public void notifyObservers(UserChangeEvent t) {
         observers.stream().forEach(x->x.update(t));
 
+    }
+
+    public Iterable<Message> getAllMessages(){
+        return repository.getAllMessages();
+    }
+
+    public Iterable<Message> listMessagesUsers(ID idUser1, ID idUser2) {
+        return repository.listMessagesUsers(idUser1,idUser2);
     }
 
 
