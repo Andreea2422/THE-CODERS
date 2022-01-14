@@ -104,7 +104,7 @@ public class UsersController implements Observer<UserChangeEvent>{
             service.addFriendServ(user.getId(),selected.getId());
 
         } else
-            MessageAlert.showErrorMessage(null, "NU ati selectat nici un student");
+            MessageAlert.showErrorMessage(null, "NU ati selectat nici un utilizator");
 
     }
 

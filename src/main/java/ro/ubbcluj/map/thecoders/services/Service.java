@@ -114,6 +114,14 @@ public class Service<ID, E extends Entity<ID>> implements Observable<UserChangeE
     }
 
     /**
+     * @param entity The User that we want to save in the repository
+     * @return null if the operation is successful, entity otherwise
+     */
+    public E saveUserServ(E entity) {
+        return repository.saveUser(entity);
+    }
+
+    /**
      *
      * @param id The id to be searched in order to delete the User with the corresponding id
      * @return null if successful, entity otherwise

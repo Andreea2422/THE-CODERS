@@ -1,64 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.ubbcluj.map.thecoders.controller.FunctionalitiesController">
-   <left>
-      <AnchorPane prefHeight="366.0" prefWidth="134.0" style="-fx-background-color: #EDA83B;" BorderPane.alignment="CENTER">
+<AnchorPane prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.ubbcluj.map.thecoders.controller.FunctionalitiesController">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="149.0" style="-fx-background-color: #EDA83B;">
          <children>
-            <ImageView fx:id="logoImageView" fitHeight="99.0" fitWidth="120.0" layoutX="18.0" layoutY="-23.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="logoImageView" fitHeight="140.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../../Images/logo.png" />
                </image>
             </ImageView>
-            <Button layoutX="4.0" layoutY="74.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Profile">
-               <font>
-                  <Font size="13.0" />
-               </font></Button>
-            <ImageView fx:id="userImageView" fitHeight="13.0" fitWidth="16.0" layoutX="32.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../Images/user.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="usersButton" layoutX="4.0" layoutY="109.0" mnemonicParsing="false" onAction="#usersButtonOnAction" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Users">
+            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="150.0" stylesheets="@../css/styling.css" text="Profile">
                <font>
                   <Font size="13.0" />
                </font>
+               <graphic>
+                  <ImageView fx:id="userImageView" fitHeight="13.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../Images/user.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
-            <ImageView fx:id="groupImageView" fitHeight="17.0" fitWidth="16.0" layoutX="27.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../Images/group.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="chatsButton" layoutX="4.0" layoutY="143.0" mnemonicParsing="false" onAction="#chatsButtonOnAction" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Chats">
+            <Button fx:id="usersButton1" layoutX="10.0" layoutY="176.0" mnemonicParsing="false" onAction="#usersButtonOnAction" prefHeight="35.0" prefWidth="149.0" stylesheets="@../css/styling.css" text="Search">
                <font>
                   <Font size="13.0" />
                </font>
+               <graphic>
+                  <ImageView fx:id="groupImageView1" fitHeight="17.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../Images/group.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
-            <ImageView fx:id="chatsImageView" fitHeight="25.0" fitWidth="28.0" layoutX="26.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../Images/chats.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="signOutButton" layoutX="4.0" layoutY="320.0" mnemonicParsing="false" onAction="#signOutButtonOnAction" prefHeight="26.0" prefWidth="126.0" stylesheets="@../css/styling.css" text="Sign out">
+            <Button fx:id="usersButton" mnemonicParsing="false" onAction="#usersButtonOnAction" prefHeight="35.0" prefWidth="149.0" stylesheets="@../css/styling.css" text="Friend request">
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <graphic>
+                  <ImageView fx:id="groupImageView" fitHeight="17.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../Images/group.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="chatsButton" mnemonicParsing="false" onAction="#chatsButtonOnAction" prefHeight="27.0" prefWidth="150.0" stylesheets="@../css/styling.css" text="Chats">
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <graphic>
+                  <ImageView fx:id="chatsImageView" fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../Images/chats.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="signOutButton" mnemonicParsing="false" onAction="#signOutButtonOnAction" prefHeight="27.0" prefWidth="151.0" stylesheets="@../css/styling.css" text="Sign out">
                <font>
                   <Font size="13.0" />
                </font>
             </Button>
          </children>
-      </AnchorPane>
-   </left>
-   <top>
-      <AnchorPane prefHeight="38.0" prefWidth="520.0" style="-fx-background-color: #EDA83B;" BorderPane.alignment="CENTER">
+      </VBox>
+      <GridPane layoutX="155.0" layoutY="111.0" prefHeight="280.0" prefWidth="354.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="242.0" minHeight="10.0" prefHeight="242.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <TextField fx:id="searchTextField" layoutX="357.0" layoutY="7.0" promptText="Search" />
+            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/styling.css" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn fx:id="tableColumnFirstName" prefWidth="125.0" text="FirstName" />
+                <TableColumn fx:id="tableColumnLastName" prefWidth="107.0" text="LastName" />
+                  <TableColumn fx:id="tableColumnUserName" prefWidth="117.0" text="UserName" />
+              </columns>
+            </TableView>
+            <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="354.0">
+               <children>
+                  <TextField fx:id="searchTextField" prefHeight="27.0" prefWidth="298.0" promptText="Search" />
+                  <Button fx:id="addFriendButton" mnemonicParsing="false" onAction="#addFriendButtonOnAction" prefHeight="30.0" prefWidth="83.0" stylesheets="@../css/styling.css" text="Add">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
          </children>
-      </AnchorPane>
-   </top>
-</BorderPane>
+      </GridPane>
+      <Pane layoutX="151.0" layoutY="14.0" prefHeight="71.0" prefWidth="366.0" style="-fx-background-color: #ad9671;">
+         <children>
+            <Label layoutX="14.0" layoutY="28.0" text="Find People" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label fx:id="addFriendMessageLabel" layoutX="162.0" layoutY="92.0" prefHeight="18.0" prefWidth="322.0" textFill="#5451ea" />
+   </children>
+</AnchorPane>
