@@ -344,9 +344,6 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
     @Override
     public List<E> findAllFriendsForOneUser(ID idUser) {
         List<E> list = new ArrayList<>();
-        User user = (User) findOne(idUser);
-//        System.out.println("User: " + user.getFirstName() + " " + user.getLastName());
-//        System.out.println("-- Friend list --");
         String sql = "SELECT * FROM friendships where id_user1 = " + idUser;
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -358,7 +355,6 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
                 Date sqlDate = new Date(resultSet.getDate("friendship_date").getTime());
                 String date = new SimpleDateFormat("yyyy/MM/dd").format(sqlDate);
                 friend.setDate(sqlDate);
-                //System.out.println("User: " + friend.getFirstName() + " " + friend.getLastName() + " " + date);
                 list.add((E) friend);
             }
         } catch (SQLException e) {
@@ -370,7 +366,7 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
     @Override
     public List<E> findAllRequestsForOneUser(ID id) {
         List<E> list = new ArrayList<>();
-        String sql = "SELECT * FROM request where id_user2 = " + id;
+        String sql = "SELECT * FROM request where id_user1 = " + id;
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql))
         {

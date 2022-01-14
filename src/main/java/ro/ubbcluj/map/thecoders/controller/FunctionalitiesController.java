@@ -43,7 +43,7 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     Service service;
     ObservableList<User> model = FXCollections.observableArrayList();
     ObservableList<User> modelFriends = FXCollections.observableArrayList();
-    ObservableList<User> modelRequests = FXCollections.observableArrayList();
+    ObservableList<Request> modelRequests = FXCollections.observableArrayList();
     User user;
 
     private double xOffset = 0;
@@ -88,15 +88,27 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     @FXML
     TableView<User> tableView;
     @FXML
-    TableView<User> tableView1;
+    TableView<Request> tableView1;  //request
     @FXML
-    TableView<User> tableView2;
+    TableView<User> tableView2;  //user
     @FXML
     TableColumn<User, String> tableColumnFirstName;
     @FXML
     TableColumn<User, String> tableColumnLastName;
     @FXML
     TableColumn<User, String> tableColumnUserName;
+    @FXML
+    TableColumn<Request, String> tableColumnFirstName1;
+    @FXML
+    TableColumn<Request, String> tableColumnLastName1;
+    @FXML
+    TableColumn<Request, String> tableColumnUserName1;
+    @FXML
+    TableColumn<User, String> tableColumnFirstName2;
+    @FXML
+    TableColumn<User, String> tableColumnLastName2;
+    @FXML
+    TableColumn<User, String> tableColumnUserName2;
     @FXML
     private Label addFriendMessageLabel;
     @FXML
@@ -145,52 +157,50 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         tableSearchRequests();
     }
 
-    private void tableSearchRequests() {
-        tableColumnFirstName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+    private void tableSearchFriends() {
+        tableColumnFirstName2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
                 return new SimpleStringProperty(param.getValue().getFirstName());
             }
         });
-        tableColumnLastName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+        tableColumnLastName2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
                 return new SimpleStringProperty(param.getValue().getLastName());
             }
         });
-        tableColumnUserName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+        tableColumnUserName2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
                 return new SimpleStringProperty(param.getValue().getUserName());
             }
         });
-        tableView2.setItems(modelRequests);
-
-        requestSearchTextField.textProperty().addListener(o -> handleFilterRequests());
+        tableView2.setItems(modelFriends);
+        friendsSearchTextField.textProperty().addListener(o -> handleFilterFriends());
     }
 
-    private void tableSearchFriends() {
-        tableColumnFirstName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+    private void tableSearchRequests() {
+        tableColumnFirstName1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Request, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Request, String> param) {
                 return new SimpleStringProperty(param.getValue().getFirstName());
             }
         });
-        tableColumnLastName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+        tableColumnLastName1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Request, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Request, String> param) {
                 return new SimpleStringProperty(param.getValue().getLastName());
             }
         });
-        tableColumnUserName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+        tableColumnUserName1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Request, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Request, String> param) {
                 return new SimpleStringProperty(param.getValue().getUserName());
             }
         });
-        tableView1.setItems(modelFriends);
-
-        friendsSearchTextField.textProperty().addListener(o -> handleFilterFriends());
+        tableView1.setItems(modelRequests);
+        requestSearchTextField.textProperty().addListener(o -> handleFilterRequests());
     }
 
     private void tableSearchUsers() {
@@ -223,12 +233,19 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
                 .collect(Collectors.toList());
         model.setAll(userList);
     }
+
     private void initModelFriends() {
-        List<User> userList = service.allFriendsForOneUser(user.getId());
+        Iterable<User> users = service.allFriendsForOneUser(user.getId());
+        List<User> userList = StreamSupport.stream(users.spliterator(), false)
+                .collect(Collectors.toList());
+        //List<User> userList = service.allFriendsForOneUser(user.getId());
         modelFriends.setAll(userList);
     }
     private void initModelRequests() {
-        List<User> userList = service.allRequestsForOneUser(user.getId());
+        Iterable<Request> users = service.allRequestsForOneUser(user.getId());
+        List<Request> userList = StreamSupport.stream(users.spliterator(), false)
+                .collect(Collectors.toList());
+        //List<User> userList = service.allRequestsForOneUser(user.getId());
         modelRequests.setAll(userList);
     }
 

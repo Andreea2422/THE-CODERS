@@ -100,7 +100,7 @@
                   <Font size="13.0" />
                </font>
                <graphic>
-                  <ImageView fx:id="signOutImageView" fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" >
+                  <ImageView fx:id="signOutImageView" fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../../../Images/signout.png" />
                      </image>
