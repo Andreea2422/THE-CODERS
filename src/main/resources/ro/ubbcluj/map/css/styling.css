@@ -14,3 +14,20 @@
     -fx-border-color: #EDA83B;
     -fx-border-width: 0px 0px 0px 3px;
 }
+
+.table-view .column-header,
+.table-view .column-header-background .filler {
+    -fx-cell-size: 20;
+    -fx-background-color: #ad9671;
+}
+.table-view .column-header .label{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER-LEFT;
+}
+.table-view .cell{
+    -fx-cell-size: 30;
+    -fx-alignment: CENTER-LEFT;
+    -fx-text-fill: #000000;
+    -fx-alignment: CENTER-LEFT;
+}

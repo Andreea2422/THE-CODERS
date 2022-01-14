@@ -132,8 +132,8 @@ public class User extends Entity<Long> {
         if (!(o instanceof User)) return false;
         User that = (User) o;
         return getFirstName().equals(that.getFirstName()) &&
-                getLastName().equals(that.getLastName()) &&
-                getFriends().equals(that.getFriends());
+                getLastName().equals(that.getLastName()) ;
+
     }
 
     /**

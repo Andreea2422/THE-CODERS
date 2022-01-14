@@ -1,5 +1,7 @@
 package ro.ubbcluj.map.thecoders.controller;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -7,15 +9,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import ro.ubbcluj.map.thecoders.Main;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.domain.validators.UserValidator;
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -55,6 +57,18 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     private ImageView groupImageView;
     @FXML
     private ImageView chatsImageView;
+    @FXML
+    TableView<User> tableView;
+    @FXML
+    TableColumn<User, String> tableColumnFirstName;
+    @FXML
+    TableColumn<User, String> tableColumnLastName;
+    @FXML
+    TableColumn<User, String> tableColumnUserName;
+    @FXML
+    private Label addFriendMessageLabel;
+    @FXML
+    private TextField searchTextField;
 
     public void setService(Service service){
         this.service = service;
@@ -79,12 +93,28 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         File chatsFile = new File("Images/chats.png");
         Image chatsImage = new Image(chatsFile.toURI().toString());
         chatsImageView.setImage(chatsImage);
-//       tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<User, String>("firstName"));
-//       tableColumnLastName.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
-//       tableColumnUserName.setCellValueFactory(new PropertyValueFactory<User, String>("userName"));
-//       tableColumnPassword.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
-//       tableView.setItems(model);
 
+        tableColumnFirstName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getFirstName());
+            }
+        });
+        tableColumnLastName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getLastName());
+            }
+        });
+        tableColumnUserName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getUserName());
+            }
+        });
+        tableView.setItems(model);
+
+        searchTextField.textProperty().addListener(o -> handleFilter());
     }
 
     private void initModel() {
@@ -166,4 +196,37 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     }
 
 
+    public void addFriendButtonOnAction(ActionEvent event) throws IOException {
+        User selected = (User) tableView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            var friends = service.allFriendsForOneUser(user.getId());
+            if(friends.contains(selected)){
+                addFriendMessageLabel.setText("Friend already exist!");
+            }
+            else {
+                service.requestFriendshipById(this.user.getId(), selected.getId());
+                addFriendMessageLabel.setText("Friend request sent!");
+            }
+        }
+        else {
+            addFriendMessageLabel.setText("Select one user!");
+        }
+    }
+
+    private void handleFilter() {
+        Predicate<User> p1 = u -> u.getFirstName().startsWith(searchTextField.getText());
+        Predicate<User> p2 = u -> u.getLastName().startsWith(searchTextField.getText());
+        Predicate<User> p3 = u -> u.getUserName().startsWith(searchTextField.getText());
+
+        model.setAll(getUsersList()
+                .stream()
+                .filter(p1.or(p2).or(p3))
+                .collect(Collectors.toList()));
+    }
+    private List<User> getUsersList() {
+        Iterable<User> users = service.getAll();
+        List<User> userList = StreamSupport.stream(users.spliterator(), false)
+                .collect(Collectors.toList());
+        return userList;
+    }
 }
