@@ -65,6 +65,11 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements PagingRepos
     }
 
     @Override
+    public List<E> findAllRequestsForOneUser(ID id) {
+        return null;
+    }
+
+    @Override
     public E findOneFriendForOneUser(ID idUser1, ID idUser2) {
         int ok=0;
         if (idUser1==null || idUser2==null)

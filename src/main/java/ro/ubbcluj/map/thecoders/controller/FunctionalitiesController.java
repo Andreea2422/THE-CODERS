@@ -8,16 +8,20 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import ro.ubbcluj.map.thecoders.Main;
+import ro.ubbcluj.map.thecoders.domain.Request;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.domain.validators.UserValidator;
 import ro.ubbcluj.map.thecoders.repository.Repository;
@@ -38,6 +42,8 @@ import java.util.stream.StreamSupport;
 public class FunctionalitiesController implements Observer<UserChangeEvent> {
     Service service;
     ObservableList<User> model = FXCollections.observableArrayList();
+    ObservableList<User> modelFriends = FXCollections.observableArrayList();
+    ObservableList<User> modelRequests = FXCollections.observableArrayList();
     User user;
 
     private double xOffset = 0;
@@ -46,9 +52,27 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     @FXML
     private Button signOutButton;
     @FXML
-    private Button usersButton;
-//    @FXML
-//    private Button chatsButton;
+    private Button searchButton;
+    @FXML
+    private Button requestUsersButton;
+    @FXML
+    private Button profileButton;
+    @FXML
+    private Button friendsButton;
+    @FXML
+    private Button chatsButton;
+    @FXML
+    private Label statusLabel;
+    @FXML
+    private Pane statusPane;
+    @FXML
+    private GridPane searchPane;
+    @FXML
+    private GridPane friendRequestPane;
+    @FXML
+    private GridPane friendsPane;
+    @FXML
+    private GridPane profilePane;
     @FXML
     private ImageView logoImageView;
     @FXML
@@ -60,6 +84,10 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     @FXML
     TableView<User> tableView;
     @FXML
+    TableView<User> tableView1;
+    @FXML
+    TableView<User> tableView2;
+    @FXML
     TableColumn<User, String> tableColumnFirstName;
     @FXML
     TableColumn<User, String> tableColumnLastName;
@@ -69,11 +97,17 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     private Label addFriendMessageLabel;
     @FXML
     private TextField searchTextField;
+    @FXML
+    private TextField friendsSearchTextField;
+    @FXML
+    private TextField requestSearchTextField;
 
     public void setService(Service service){
         this.service = service;
         this.service.addObserver(this);
         initModel();
+        initModelFriends();
+        initModelRequests();
     }
 
     @FXML
@@ -94,6 +128,60 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         Image chatsImage = new Image(chatsFile.toURI().toString());
         chatsImageView.setImage(chatsImage);
 
+        tableSearchUsers();
+        tableSearchFriends();
+        tableSearchRequests();
+    }
+
+    private void tableSearchRequests() {
+        tableColumnFirstName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getFirstName());
+            }
+        });
+        tableColumnLastName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getLastName());
+            }
+        });
+        tableColumnUserName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getUserName());
+            }
+        });
+        tableView2.setItems(modelRequests);
+
+        requestSearchTextField.textProperty().addListener(o -> handleFilterRequests());
+    }
+
+    private void tableSearchFriends() {
+        tableColumnFirstName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getFirstName());
+            }
+        });
+        tableColumnLastName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getLastName());
+            }
+        });
+        tableColumnUserName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                return new SimpleStringProperty(param.getValue().getUserName());
+            }
+        });
+        tableView1.setItems(modelFriends);
+
+        friendsSearchTextField.textProperty().addListener(o -> handleFilterFriends());
+    }
+
+    private void tableSearchUsers() {
         tableColumnFirstName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
@@ -123,7 +211,14 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
                 .collect(Collectors.toList());
         model.setAll(userList);
     }
-
+    private void initModelFriends() {
+        List<User> userList = service.allFriendsForOneUser(user.getId());
+        modelFriends.setAll(userList);
+    }
+    private void initModelRequests() {
+        List<User> userList = service.allRequestsForOneUser(user.getId());
+        modelRequests.setAll(userList);
+    }
 
     @Override
     public void update(UserChangeEvent userChangeEvent) {
@@ -135,26 +230,26 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         stage.close();
     }
 
-    public void usersButtonOnAction(ActionEvent event){
-        try{
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("users-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-            Stage registerStage = new Stage();
-            registerStage.initStyle(StageStyle.UNDECORATED);
-            registerStage.setScene(scene);
-
-            Repository<Long, User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
-            service = new Service(repository);
-
-            UsersController usersController = fxmlLoader.getController();
-            usersController.setService(service);
-            usersController.setUser(user);
-
-            registerStage.show();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
+//    public void requestUsersButtonOnAction(ActionEvent event){
+//        try{
+//            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("users-view.fxml"));
+//            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+//            Stage registerStage = new Stage();
+//            registerStage.initStyle(StageStyle.UNDECORATED);
+//            registerStage.setScene(scene);
+//
+////            Repository<Long, User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
+////            service = new Service(repository);
+//
+//            UsersController usersController = fxmlLoader.getController();
+//            usersController.setService(service);
+//            usersController.setUser(user);
+//
+//            registerStage.show();
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
     public void setUser(User user) {
         this.user = user;
@@ -194,7 +289,14 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         registerStage.show();
 
     }
+    public void deleteRequestButtonOnAction(ActionEvent event) {
+    }
 
+    public void confirmRequestButtonOnAction(ActionEvent event) {
+    }
+
+    public void removeFriendButtonOnAction(ActionEvent event) {
+    }
 
     public void addFriendButtonOnAction(ActionEvent event) throws IOException {
         User selected = (User) tableView.getSelectionModel().getSelectedItem();
@@ -223,10 +325,58 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
                 .filter(p1.or(p2).or(p3))
                 .collect(Collectors.toList()));
     }
+    private void handleFilterFriends() {
+        Predicate<User> p1 = u -> u.getFirstName().startsWith(searchTextField.getText());
+        Predicate<User> p2 = u -> u.getLastName().startsWith(searchTextField.getText());
+        Predicate<User> p3 = u -> u.getUserName().startsWith(searchTextField.getText());
+
+        model.setAll(getFriendsList()
+                .stream()
+                .filter(p1.or(p2).or(p3))
+                .collect(Collectors.toList()));
+    }
+    private void handleFilterRequests() {
+        Predicate<User> p1 = u -> u.getFirstName().startsWith(searchTextField.getText());
+        Predicate<User> p2 = u -> u.getLastName().startsWith(searchTextField.getText());
+        Predicate<User> p3 = u -> u.getUserName().startsWith(searchTextField.getText());
+
+        model.setAll(getUsersListRequests()
+                .stream()
+                .filter(p1.or(p2).or(p3))
+                .collect(Collectors.toList()));
+    }
     private List<User> getUsersList() {
         Iterable<User> users = service.getAll();
         List<User> userList = StreamSupport.stream(users.spliterator(), false)
                 .collect(Collectors.toList());
         return userList;
     }
+    private List<User> getFriendsList() {
+        return service.allFriendsForOneUser(user.getId());
+    }
+    private List<User> getUsersListRequests() {
+       return service.allRequestsForOneUser(user.getId());
+    }
+
+    public void searchButtonOnAction(ActionEvent event) {
+        statusLabel.setText("Find People");
+        statusPane.setBackground(new Background(new BackgroundFill(Color.rgb(173,150,113), CornerRadii.EMPTY, Insets.EMPTY)));
+        searchPane.toFront();
+    }
+    public void profileButtonOnAction(ActionEvent event) {
+        statusLabel.setText("My Profile");
+        statusPane.setBackground(new Background(new BackgroundFill(Color.rgb(242,193,115), CornerRadii.EMPTY, Insets.EMPTY)));
+        profilePane.toFront();
+    }
+    public void requestUsersButtonOnAction(ActionEvent event){
+        statusLabel.setText("Answer Requests");
+        statusPane.setBackground(new Background(new BackgroundFill(Color.rgb(173,150,113), CornerRadii.EMPTY, Insets.EMPTY)));
+        friendRequestPane.toFront();
+    }
+    public void friendsButtonOnAction(ActionEvent event){
+        statusLabel.setText("My Friends");
+        statusPane.setBackground(new Background(new BackgroundFill(Color.rgb(173,150,113), CornerRadii.EMPTY, Insets.EMPTY)));
+        friendsPane.toFront();
+    }
+
 }

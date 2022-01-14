@@ -85,6 +85,15 @@ public class Service<ID, E extends Entity<ID>> implements Observable<UserChangeE
     }
 
     /**
+     * Shows the requests of one user
+     * @param id The id that we will search in the repo
+     * @return the request associated with that id, null otherwise
+     */
+    public List<E> allRequestsForOneUser(ID id){
+        return repository.findAllRequestsForOneUser(id);
+    }
+
+    /**
      * Shows one friend of one user
      * @param id1 The id that we will search in the repo
      * @param id2 The id of the friend that we will search in the repo

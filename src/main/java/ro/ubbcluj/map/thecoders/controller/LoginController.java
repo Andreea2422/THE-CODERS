@@ -118,8 +118,8 @@ public class LoginController implements Initializable {
             registerStage.setScene(scene);
 
             FunctionalitiesController functionalitiesController = fxmlLoader.getController();
-            functionalitiesController.setService(service);
             functionalitiesController.setUser(user);
+            functionalitiesController.setService(service);
             registerStage.show();
         }catch(Exception e){
             e.printStackTrace();
