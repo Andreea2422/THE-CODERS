@@ -73,10 +73,26 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Button fx:id="eventsButton" mnemonicParsing="false" onAction="#eventsButtonOnAction" prefHeight="26.0" prefWidth="154.0" style="-fx-background-color: #EDA83B;" text="Events">
+               <graphic>
+                  <ImageView fx:id="eventsImageView" fitHeight="21.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../Images/event.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <Button fx:id="signOutButton" mnemonicParsing="false" onAction="#signOutButtonOnAction" prefHeight="27.0" prefWidth="151.0" stylesheets="@../css/styling.css" text="Sign out">
                <font>
                   <Font size="13.0" />
                </font>
+               <graphic>
+                  <ImageView fx:id="signOutImageView" fitHeight="16.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" >
+                     <image>
+                        <Image url="@../../../../../../../Images/signout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
       </VBox>

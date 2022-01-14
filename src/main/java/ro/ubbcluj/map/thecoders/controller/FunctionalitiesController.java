@@ -46,10 +46,6 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     @FXML
     private Button signOutButton;
     @FXML
-    private Button usersButton;
-//    @FXML
-//    private Button chatsButton;
-    @FXML
     private ImageView logoImageView;
     @FXML
     private ImageView userImageView;
@@ -57,6 +53,10 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     private ImageView groupImageView;
     @FXML
     private ImageView chatsImageView;
+    @FXML
+    private ImageView signOutImageView;
+    @FXML
+    private ImageView eventsImageView;
     @FXML
     TableView<User> tableView;
     @FXML
@@ -93,6 +93,14 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         File chatsFile = new File("Images/chats.png");
         Image chatsImage = new Image(chatsFile.toURI().toString());
         chatsImageView.setImage(chatsImage);
+
+        File eventsFile = new File("Images/event.png");
+        Image eventsImage = new Image(eventsFile.toURI().toString());
+        eventsImageView.setImage(eventsImage);
+
+        File outFile = new File("Images/signout.png");
+        Image outImage = new Image(outFile.toURI().toString());
+        signOutImageView.setImage(outImage);
 
         tableColumnFirstName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
@@ -229,4 +237,12 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
                 .collect(Collectors.toList());
         return userList;
     }
+
+
+    public void eventsButtonOnAction(ActionEvent event){
+        Stage stage = (Stage) signOutButton.getScene().getWindow();
+        stage.close();
+    }
+
+
 }

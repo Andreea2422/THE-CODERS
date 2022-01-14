@@ -22,47 +22,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Service<ID, E extends Entity<ID>> implements Observable<MessageChangeEvent> {
-//    private PagingRepository<Long, User> repo;
-//    public Service(PagingRepository<Long, User> repo){
-//        this.repo = repo;
-//    }
-//
-//    private int page = 0;
-//    private int size = 1;
-//
-//    private Pageable pageable;
-//    public void setPageSize(int size) {
-//        this.size = size;
-//    }
-//
-//    public Set<User> getUsersOnPage(int page){
-//        this.page=page;
-//        Pageable pageable = new PageableImplementation(page,this.size);
-//        Page<User> userPage = repo.findAll(pageable);
-//        return userPage.getContent().collect(Collectors.toSet());
-//    }
-
     private Repository<ID, E> repository;
     public Service(Repository<ID, E> repository){
         this.repository = repository;
     }
     private List<Observer<MessageChangeEvent>> observers = new ArrayList<>();
-//
-//    @Override
-//    public void addObserver(Observer<UserChangeEvent> e) {
-//      observers.add(e);
-//    }
-//
-//    @Override
-//    public void removeObserver(Observer<UserChangeEvent> e) {
-//
-//    }
-//
-//    @Override
-//    public void notifyObservers(UserChangeEvent t) {
-//        observers.stream().forEach(x->x.update(t));
-//
-//    }
 
     public Iterable<Message> getAllMessages(){
         return repository.getAllMessages();
