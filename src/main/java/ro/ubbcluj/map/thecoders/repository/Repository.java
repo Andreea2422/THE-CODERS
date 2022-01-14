@@ -30,6 +30,8 @@ public interface Repository<ID, E extends Entity<ID>> {
 
     List<E> findAllFriendsForOneUser(ID id);
 
+    List<E> findAllRequestsForOneUser(ID id);
+
     E findOneFriendForOneUser(ID id1, ID id2);
 
     /**
@@ -119,4 +121,6 @@ public interface Repository<ID, E extends Entity<ID>> {
 
     Iterable<Message> getAllMessages();
     Iterable<Message> listMessagesUsers(ID idUser1, ID idUser2);
+
+
 }

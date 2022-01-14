@@ -2,6 +2,7 @@ package ro.ubbcluj.map.thecoders.repository.db;
 
 import ro.ubbcluj.map.thecoders.domain.Entity;
 import ro.ubbcluj.map.thecoders.domain.Message;
+import ro.ubbcluj.map.thecoders.domain.Request;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.domain.validators.Validator;
 import ro.ubbcluj.map.thecoders.repository.paging.Page;
@@ -359,6 +360,32 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
                 friend.setDate(sqlDate);
                 //System.out.println("User: " + friend.getFirstName() + " " + friend.getLastName() + " " + date);
                 list.add((E) friend);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<E> findAllRequestsForOneUser(ID id) {
+        List<E> list = new ArrayList<>();
+        String sql = "SELECT * FROM request where id_user2 = " + id;
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                Long idUser = resultSet.getLong("id_user1");
+                String status = resultSet.getString("status");
+                Date sqlDate = new Date(resultSet.getDate("date").getTime());
+                String date = new SimpleDateFormat("yyyy/MM/dd").format(sqlDate);
+
+
+                User user = (User) findOne((ID) idUser);
+                Request userRequest = new Request(user.getFirstName(),user.getLastName(),user.getUserName(),status,sqlDate);
+
+                list.add((E) userRequest);
             }
         } catch (SQLException e) {
             e.printStackTrace();
