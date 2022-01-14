@@ -709,17 +709,17 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
     @Override
     public E saveUser(E entity) {
         validator.validate(entity);
-        String sql = "insert into users (id, first_name, last_name, user_name, password ) values (?, ?, ?, ?, ?)";
+        String sql = "insert into users (first_name, last_name, user_name, password ) values (?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             User user = (User) entity;
-            ps.setLong(1, user.getId());
-            ps.setString(2, user.getFirstName());
-            ps.setString(3, user.getLastName());
+
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
             ps.setString(3, user.getUserName());
-            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getPassword());
 
             ps.executeUpdate();
             load();

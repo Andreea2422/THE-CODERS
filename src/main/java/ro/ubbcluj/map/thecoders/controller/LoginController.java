@@ -100,6 +100,8 @@ public class LoginController implements Initializable {
             Stage registerStage = new Stage();
             registerStage.initStyle(StageStyle.UNDECORATED);
             registerStage.setScene(scene);
+            RegisterController registerController = fxmlLoader.getController();
+            registerController.setService(service);
             registerStage.show();
         }catch(Exception e){
             e.printStackTrace();

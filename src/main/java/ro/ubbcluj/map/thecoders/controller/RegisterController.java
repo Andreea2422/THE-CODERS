@@ -90,15 +90,13 @@ public class RegisterController implements Initializable {
     }
 
     public void registerUser() throws SQLException {
-//        JavaPostgresSQL.writeToDatabase(firstnameTextField.getText(),
-//                lastnameTextField.getText(),
-//                usernameTextField.getText(),
-//                setPasswordField.getText());
+
 //        Repository<Long,User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
-//        User user = new User(firstnameTextField.getText(),
-//                lastnameTextField.getText(),
-//                usernameTextField.getText(),
-//                setPasswordField.getText());
-//        repository.saveUser(user);
+        User user = new User(firstnameTextField.getText(),
+                lastnameTextField.getText(),
+                usernameTextField.getText(),
+                setPasswordField.getText());
+        user.setId(1L);
+        service.saveUserServ(user);
     }
 }
