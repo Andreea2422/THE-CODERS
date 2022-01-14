@@ -82,6 +82,7 @@ public interface Repository<ID, E extends Entity<ID>> {
      * @param idUser1
      * @param idUser2
      * @param msg
+     * @return
      */
     void sendMessageRepo(ID idUser1, ID idUser2, String msg) throws SQLException;
 

@@ -7,7 +7,6 @@ import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.domain.validators.ValidationException;
 import ro.ubbcluj.map.thecoders.domain.validators.Validator;
 import ro.ubbcluj.map.thecoders.repository.RepoException;
-import ro.ubbcluj.map.thecoders.repository.Repository;
 import ro.ubbcluj.map.thecoders.repository.paging.Page;
 import ro.ubbcluj.map.thecoders.repository.paging.Pageable;
 import ro.ubbcluj.map.thecoders.repository.paging.PagingRepository;

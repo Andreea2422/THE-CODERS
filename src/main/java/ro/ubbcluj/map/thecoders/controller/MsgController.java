@@ -14,6 +14,7 @@ import javafx.util.Callback;
 import ro.ubbcluj.map.thecoders.domain.Message;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.services.Service;
+import ro.ubbcluj.map.thecoders.utils.events.MessageChangeEvent;
 import ro.ubbcluj.map.thecoders.utils.events.UserChangeEvent;
 import ro.ubbcluj.map.thecoders.utils.observer.Observer;
 
@@ -23,12 +24,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class MsgController implements Observer<UserChangeEvent> {
+public class MsgController implements Observer<MessageChangeEvent> {
       Service service;
       ObservableList<Message> model = FXCollections.observableArrayList();
       private User user;
       User selected;
-      //private List<Label> messages = new ArrayList<>();
 
       @FXML
       private Button sendButton;
@@ -36,8 +36,6 @@ public class MsgController implements Observer<UserChangeEvent> {
       private Button goBackButton;
       @FXML
       private TextField messageTextField;
-      @FXML
-      private VBox chatBox;
       @FXML
       TableView<Message> tableViewMsg;
       @FXML
@@ -86,37 +84,14 @@ public class MsgController implements Observer<UserChangeEvent> {
         }
 
 
-      public void Stuff(){
-            String message = messageTextField.getText();
-            //User user = repository.findOneByUsername(messageTextField.getText(), messageTextField.getText());
-        }
-
-      private int index = 0;
       public void sendButtonOnAction(ActionEvent event) throws SQLException {
             String msg = messageTextField.getText();
-            Long id1 = Long.valueOf(1);
-            Long id2 = Long.valueOf(2);
-            service.sendOneMessage(id1,id2,msg);
-//            sendButton.setOnAction(event1 -> {messages.add(new Label(msg));
-//                  if(index%2==0){
-//
-//                        messages.get(index).setAlignment(Pos.CENTER_LEFT);
-//                        System.out.println("1");
-//
-//                  }else{
-//
-//                        messages.get(index).setAlignment(Pos.CENTER_RIGHT);
-//                        System.out.println("2");}
-//
-//                  chatBox.getChildren().add(messages.get(index));
-//                  index++;
-//
-//
-//            });
+            service.sendOneMessage(user.getId(),selected.getId(),msg);
+            initModel();
         }
 
       @Override
-        public void update(UserChangeEvent userChangeEvent) {
+        public void update(MessageChangeEvent messageChangeEvent) {
             initModel();
         }
 

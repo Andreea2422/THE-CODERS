@@ -8,6 +8,8 @@ import ro.ubbcluj.map.thecoders.repository.paging.Page;
 import ro.ubbcluj.map.thecoders.repository.paging.Pageable;
 import ro.ubbcluj.map.thecoders.repository.paging.PageableImplementation;
 import ro.ubbcluj.map.thecoders.repository.paging.PagingRepository;
+import ro.ubbcluj.map.thecoders.utils.events.ChangeEventType;
+import ro.ubbcluj.map.thecoders.utils.events.MessageChangeEvent;
 import ro.ubbcluj.map.thecoders.utils.events.UserChangeEvent;
 import ro.ubbcluj.map.thecoders.utils.observer.Observable;
 import ro.ubbcluj.map.thecoders.utils.observer.Observer;
@@ -19,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Service<ID, E extends Entity<ID>> implements Observable<UserChangeEvent> {
+public class Service<ID, E extends Entity<ID>> implements Observable<MessageChangeEvent> {
 //    private PagingRepository<Long, User> repo;
 //    public Service(PagingRepository<Long, User> repo){
 //        this.repo = repo;
@@ -44,23 +46,23 @@ public class Service<ID, E extends Entity<ID>> implements Observable<UserChangeE
     public Service(Repository<ID, E> repository){
         this.repository = repository;
     }
-    private List<Observer<UserChangeEvent>> observers = new ArrayList<>();
-
-    @Override
-    public void addObserver(Observer<UserChangeEvent> e) {
-      observers.add(e);
-    }
-
-    @Override
-    public void removeObserver(Observer<UserChangeEvent> e) {
-
-    }
-
-    @Override
-    public void notifyObservers(UserChangeEvent t) {
-        observers.stream().forEach(x->x.update(t));
-
-    }
+    private List<Observer<MessageChangeEvent>> observers = new ArrayList<>();
+//
+//    @Override
+//    public void addObserver(Observer<UserChangeEvent> e) {
+//      observers.add(e);
+//    }
+//
+//    @Override
+//    public void removeObserver(Observer<UserChangeEvent> e) {
+//
+//    }
+//
+//    @Override
+//    public void notifyObservers(UserChangeEvent t) {
+//        observers.stream().forEach(x->x.update(t));
+//
+//    }
 
     public Iterable<Message> getAllMessages(){
         return repository.getAllMessages();
@@ -190,6 +192,7 @@ public class Service<ID, E extends Entity<ID>> implements Observable<UserChangeE
      */
     public void sendOneMessage(ID idUser, ID idFriend, String message) throws SQLException {
         repository.sendMessageRepo(idUser,idFriend,message);
+
     }
 
     /**
@@ -231,4 +234,18 @@ public class Service<ID, E extends Entity<ID>> implements Observable<UserChangeE
     }
 
 
+    @Override
+    public void addObserver(Observer<MessageChangeEvent> e) {
+        observers.add(e);
+    }
+
+    @Override
+    public void removeObserver(Observer<MessageChangeEvent> e) {
+
+    }
+
+    @Override
+    public void notifyObservers(MessageChangeEvent t) {
+        observers.stream().forEach(x->x.update(t));
+    }
 }

@@ -4,7 +4,6 @@ import ro.ubbcluj.map.thecoders.domain.Entity;
 import ro.ubbcluj.map.thecoders.domain.Message;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.domain.validators.Validator;
-import ro.ubbcluj.map.thecoders.repository.Repository;
 import ro.ubbcluj.map.thecoders.repository.paging.Page;
 import ro.ubbcluj.map.thecoders.repository.paging.Pageable;
 import ro.ubbcluj.map.thecoders.repository.paging.PagingRepository;
@@ -400,6 +399,7 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
      * @param idUser2 The id of the friend who will receive the message
      * @param msg The content of the message
      * @throws SQLException
+     * @return
      */
     @Override
     public void sendMessageRepo(ID idUser1, ID idUser2, String msg) throws SQLException {
@@ -408,12 +408,9 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
-//            java.util.Date javaDate = new java.util.Date();
-//            java.sql.Date mySQLDate = new java.sql.Date(javaDate.getTime());
             ps.setLong(1, (Long) idUser1);
             ps.setLong(2, (Long) idUser2);
             ps.setString(3, msg);
-//            ps.setDate(4,mySQLDate);
             Calendar calendar = Calendar.getInstance();
             java.util.Date currentTime = calendar.getTime();
             long time = currentTime.getTime();
@@ -561,7 +558,7 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
         Message replymsg;
         String sql = "SELECT * FROM messages \n" +
                 " WHERE id_user1 = " + idUser1 + " and id_user2 = " + idUser2 +
-                " or id_user1 = " + idUser2 +  " and id_user2 = " + idUser1 + "ORDER BY date ASC";
+                " or id_user1 = " + idUser2 +  " and id_user2 = " + idUser1 + "ORDER BY date";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet resultSet = ps.executeQuery();
