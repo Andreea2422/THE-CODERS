@@ -83,7 +83,6 @@ public class MsgController implements Observer<MessageChangeEvent> {
             stage.close();
         }
 
-
       public void sendButtonOnAction(ActionEvent event) throws SQLException {
             String msg = messageTextField.getText();
             service.sendOneMessage(user.getId(),selected.getId(),msg);
@@ -94,6 +93,5 @@ public class MsgController implements Observer<MessageChangeEvent> {
         public void update(MessageChangeEvent messageChangeEvent) {
             initModel();
         }
-
 
 }

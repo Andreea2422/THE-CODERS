@@ -34,6 +34,8 @@ public interface Repository<ID, E extends Entity<ID>> {
 
     E findOneFriendForOneUser(ID id1, ID id2);
 
+    List<E> findAllFriendsForOneUserByMonth(ID idUser, Integer month);
+
     /**
      *
      * @param entity
@@ -79,6 +81,8 @@ public interface Repository<ID, E extends Entity<ID>> {
 
     void deleteFriendRepo(ID idUser1, ID idUser2) throws IOException;
 
+    void deleteRequestRepo(Long id1, Long id2);
+
     /**
      * One user send message to one friend.
      * @param idUser1
@@ -95,8 +99,6 @@ public interface Repository<ID, E extends Entity<ID>> {
     void replyMessageRepoDb(ID idUser1, ID idUser2, String rasp) throws SQLException;
 
     void showMessages(Long idUser, Long idFriend);
-
-    List<E> findAllFriendsForOneUserByMonth(ID idUser, Integer month) ;
 
     /**
      * Throws RepoException if the id is null
@@ -122,5 +124,5 @@ public interface Repository<ID, E extends Entity<ID>> {
     Iterable<Message> getAllMessages();
     Iterable<Message> listMessagesUsers(ID idUser1, ID idUser2);
 
-
+    List<E> findUserForAllFriends(ID id);
 }

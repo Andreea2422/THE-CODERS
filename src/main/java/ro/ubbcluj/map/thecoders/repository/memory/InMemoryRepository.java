@@ -215,6 +215,11 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements PagingRepos
     }
 
     @Override
+    public void deleteRequestRepo(Long id1, Long id2) {
+
+    }
+
+    @Override
     public void sendMessageRepo(ID idUser1, ID idUser2, String msg) throws SQLException {
 
     }
@@ -251,6 +256,11 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements PagingRepos
 
     @Override
     public Iterable<Message> listMessagesUsers(ID idUser1, ID idUser2) {
+        return null;
+    }
+
+    @Override
+    public List<E> findUserForAllFriends(ID id) {
         return null;
     }
 

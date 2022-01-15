@@ -335,6 +335,22 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
         }
     }
 
+    @Override
+    public void deleteRequestRepo(Long id1, Long id2) {
+        String sql = "delete from request where (id_user2, id_user1) = (?, ?) ";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setLong(1, (Long) id1);
+            ps.setLong(2, (Long) id2);
+            ps.executeUpdate();
+            load();
+            loadFriends();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Finds all the friends for one given user
      * @param idUser The id that we will search for in order to get all friends
@@ -364,9 +380,31 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
     }
 
     @Override
+    public List<E> findUserForAllFriends(ID idUser) {
+        List<E> list = new ArrayList<>();
+        String sql = "SELECT * FROM friendships where id_user2 = " + idUser;
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id_user1");
+                User friend = (User) findOne((ID) id);
+                Date sqlDate = new Date(resultSet.getDate("friendship_date").getTime());
+                String date = new SimpleDateFormat("yyyy/MM/dd").format(sqlDate);
+                friend.setDate(sqlDate);
+                list.add((E) friend);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
     public List<E> findAllRequestsForOneUser(ID id) {
         List<E> list = new ArrayList<>();
-        String sql = "SELECT * FROM request where id_user1 = " + id;
+        String sql = "SELECT * FROM request where id_user2 = " + id;
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -377,9 +415,9 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
                 Date sqlDate = new Date(resultSet.getDate("date").getTime());
                 String date = new SimpleDateFormat("yyyy/MM/dd").format(sqlDate);
 
-
                 User user = (User) findOne((ID) idUser);
-                Request userRequest = new Request(user.getFirstName(),user.getLastName(),user.getUserName(),status,sqlDate);
+                user.setId(idUser);
+                Request userRequest = new Request(user,status,sqlDate);
 
                 list.add((E) userRequest);
             }
@@ -488,9 +526,6 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
                 messages.get(id).setReply(replymsg);
 
                 updateMsg(idFriend, idUser, replymsg);
-//                System.out.println(messages.get(id).getMessage());
-//                System.out.println(replymsg.getMessage());
-//                System.out.println(messages.get(id).getReply());
             }
         }
     }
@@ -615,7 +650,6 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
     @Override
     public List<E> findAllFriendsForOneUserByMonth(ID idUser, Integer month){
         List<E> list = new ArrayList<>();
-        User user = (User) findOne(idUser);
 
         String sql = "SELECT * FROM friendships where id_user1 =  " + idUser + "AND EXTRACT(MONTH FROM friendship_date) =  " + month;
         try (Connection connection = DriverManager.getConnection(url, username, password);
@@ -717,7 +751,6 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
             e.printStackTrace();
         }
         return null;
-
     }
 
     /**
@@ -735,7 +768,6 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             User user = (User) entity;
-
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getUserName());
