@@ -13,12 +13,6 @@ public class User extends Entity<Long> {
     private Date date;
     private List<User> friends;
 
-//    public User(String firstName, String lastName) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        friends = new ArrayList<>();
-//    }
-
     public User(String firstName, String lastName, String userName, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,7 +20,6 @@ public class User extends Entity<Long> {
         this.password = password;
         friends = new ArrayList<>();
     }
-
 
     /**
      * Getter for the FirstName of a USer
@@ -59,7 +52,6 @@ public class User extends Entity<Long> {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
 
     /**
      * Getter for the list of friends
@@ -97,10 +89,6 @@ public class User extends Entity<Long> {
         }
     }
 
-    public void sendMessage(Message msg){
-
-    }
-
     /**
      * Setter for the list of friends
      * @param friends the list to be set as friends
@@ -119,7 +107,6 @@ public class User extends Entity<Long> {
             System.out.println("    User: " + friend.getId()+ " " + friend.getFirstName() + " " + friend.getLastName());
         }
     }
-
 
     /**
      *

@@ -1,5 +1,6 @@
 package ro.ubbcluj.map.thecoders.controller;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -11,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -28,15 +28,16 @@ import ro.ubbcluj.map.thecoders.repository.Repository;
 import ro.ubbcluj.map.thecoders.repository.db.UtilizatorDbRepository;
 import ro.ubbcluj.map.thecoders.services.Service;
 import ro.ubbcluj.map.thecoders.utils.events.UserChangeEvent;
-import ro.ubbcluj.map.thecoders.utils.observer.Observable;
 import ro.ubbcluj.map.thecoders.utils.observer.Observer;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class FunctionalitiesController implements Observer<UserChangeEvent> {
@@ -51,16 +52,6 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
 
     @FXML
     private Button signOutButton;
-    @FXML
-    private Button searchButton;
-    @FXML
-    private Button requestUsersButton;
-    @FXML
-    private Button profileButton;
-    @FXML
-    private Button friendsButton;
-    @FXML
-    private Button chatsButton;
     @FXML
     private Label statusLabel;
     @FXML
@@ -79,6 +70,10 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     private ImageView userImageView;
     @FXML
     private ImageView groupImageView;
+    @FXML
+    private ImageView groupImageView1;
+    @FXML
+    private ImageView groupImageView2;
     @FXML
     private ImageView chatsImageView;
     @FXML
@@ -103,6 +98,10 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     TableColumn<Request, String> tableColumnLastName1;
     @FXML
     TableColumn<Request, String> tableColumnUserName1;
+    @FXML
+    TableColumn<Request, String> tableColumnStatus1;
+    @FXML
+    TableColumn<Request, Date> tableColumnDate1;
     @FXML
     TableColumn<User, String> tableColumnFirstName2;
     @FXML
@@ -139,6 +138,8 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         File groupFile = new File("Images/group.png");
         Image groupImage = new Image(groupFile.toURI().toString());
         groupImageView.setImage(groupImage);
+        groupImageView1.setImage(groupImage);
+        groupImageView2.setImage(groupImage);
 
         File chatsFile = new File("Images/chats.png");
         Image chatsImage = new Image(chatsFile.toURI().toString());
@@ -199,6 +200,19 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
                 return new SimpleStringProperty(param.getValue().getUserName());
             }
         });
+        tableColumnStatus1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Request, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Request, String> param) {
+                return new SimpleStringProperty(param.getValue().getStatus());
+            }
+        });
+        tableColumnDate1.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Request, Date>, ObservableValue<Date>>() {
+            @Override
+            public ObservableValue<Date> call(TableColumn.CellDataFeatures<Request, Date> param) {
+                return new SimpleObjectProperty(param.getValue().getDate());
+            }
+        });
+
         tableView1.setItems(modelRequests);
         requestSearchTextField.textProperty().addListener(o -> handleFilterRequests());
     }
@@ -235,17 +249,20 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     }
 
     private void initModelFriends() {
-        Iterable<User> users = service.allFriendsForOneUser(user.getId());
-        List<User> userList = StreamSupport.stream(users.spliterator(), false)
+        Iterable<User> friends1 = service.allFriendsForOneUser(user.getId());
+        Iterable<User> friends2 = service.findUserForAllFriends(user.getId());
+        List<User> userList1 = StreamSupport.stream(friends1.spliterator(), false)
                 .collect(Collectors.toList());
-        //List<User> userList = service.allFriendsForOneUser(user.getId());
-        modelFriends.setAll(userList);
+        List<User> userList2 = StreamSupport.stream(friends2.spliterator(), false)
+                .collect(Collectors.toList());
+        List<User> newList = Stream.concat(userList1.stream(), userList2.stream())
+                .collect(Collectors.toList());
+        modelFriends.setAll(newList);
     }
     private void initModelRequests() {
         Iterable<Request> users = service.allRequestsForOneUser(user.getId());
         List<Request> userList = StreamSupport.stream(users.spliterator(), false)
                 .collect(Collectors.toList());
-        //List<User> userList = service.allRequestsForOneUser(user.getId());
         modelRequests.setAll(userList);
     }
 
@@ -254,36 +271,14 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         initModel();
     }
 
-    public void signOutButtonOnAction(ActionEvent event){
-        Stage stage = (Stage) signOutButton.getScene().getWindow();
-        stage.close();
-    }
-
-//    public void requestUsersButtonOnAction(ActionEvent event){
-//        try{
-//            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("users-view.fxml"));
-//            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-//            Stage registerStage = new Stage();
-//            registerStage.initStyle(StageStyle.UNDECORATED);
-//            registerStage.setScene(scene);
-//
-////            Repository<Long, User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
-////            service = new Service(repository);
-//
-//            UsersController usersController = fxmlLoader.getController();
-//            usersController.setService(service);
-//            usersController.setUser(user);
-//
-//            registerStage.show();
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//    }
-
     public void setUser(User user) {
         this.user = user;
     }
 
+    public void signOutButtonOnAction(ActionEvent event){
+        Stage stage = (Stage) signOutButton.getScene().getWindow();
+        stage.close();
+    }
 
     public void chatsButtonOnAction(ActionEvent event) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/ro/ubbcluj/map/thecoders/chat-view.fxml"));
@@ -319,24 +314,65 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
 
     }
     public void deleteRequestButtonOnAction(ActionEvent event) {
+        Request selected = (Request) tableView1.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            service.deleteRequestServ(this.user.getId(), selected.getId());
+            initModelRequests();
+            tableSearchRequests();
+            addFriendMessageLabel.setText("Request has been deleted!");
+        }
+        else {
+            addFriendMessageLabel.setText("Select one user!");
+        }
     }
 
-    public void confirmRequestButtonOnAction(ActionEvent event) {
+    public void confirmRequestButtonOnAction(ActionEvent event) throws IOException {
+        Request selected = (Request) tableView1.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            service.addFriendServ(this.user.getId(), selected.getId());
+            service.deleteRequestServ(this.user.getId(), selected.getId());
+            initModelRequests();
+            tableSearchRequests();
+            addFriendMessageLabel.setText("Request has been confirmed!");
+        }
+        else {
+            addFriendMessageLabel.setText("Select one user!");
+        }
     }
 
-    public void removeFriendButtonOnAction(ActionEvent event) {
+    public void removeFriendButtonOnAction(ActionEvent event) throws IOException {
+        User selected = (User) tableView2.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            service.deleteFriendServ(this.user.getId(), selected.getId());
+            service.deleteFriendServ(selected.getId(), this.user.getId());
+            initModelFriends();
+            tableSearchFriends();
+            addFriendMessageLabel.setText("Friend has been removed!");
+        }
+        else {
+            addFriendMessageLabel.setText("Select one user!");
+        }
     }
 
     public void addFriendButtonOnAction(ActionEvent event) throws IOException {
         User selected = (User) tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
+            if(selected.getUserName().equals(user.getUserName())) addFriendMessageLabel.setText("Can't add yourself as friend!");
+            else{
             var friends = service.allFriendsForOneUser(user.getId());
             if(friends.contains(selected)){
                 addFriendMessageLabel.setText("Friend already exist!");
             }
             else {
-                service.requestFriendshipById(this.user.getId(), selected.getId());
-                addFriendMessageLabel.setText("Friend request sent!");
+//                List<Request> requests = service.allRequestsForOneUser(selected.getId());
+//                requests.stream().anyMatch(o -> o.getUser().equals(user.getUserName()));
+//                if(requests.stream().anyMatch(o -> o.getUser().equals(user.getUserName())) == true)
+//                    addFriendMessageLabel.setText("Request already exist!");
+//                else {
+                    service.requestFriendshipById(this.user.getId(), selected.getId());
+                    addFriendMessageLabel.setText("Friend request sent!");
+//                }
+            }
             }
         }
         else {
@@ -381,7 +417,6 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         return userList;
     }
 
-
     public void eventsButtonOnAction(ActionEvent event) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/ro/ubbcluj/map/thecoders/events-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 195, 400);
@@ -420,9 +455,10 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         friendRequestPane.toFront();
     }
     public void friendsButtonOnAction(ActionEvent event){
+        initModelFriends();
+        tableSearchFriends();
         statusLabel.setText("My Friends");
         statusPane.setBackground(new Background(new BackgroundFill(Color.rgb(173,150,113), CornerRadii.EMPTY, Insets.EMPTY)));
         friendsPane.toFront();
     }
-
 }

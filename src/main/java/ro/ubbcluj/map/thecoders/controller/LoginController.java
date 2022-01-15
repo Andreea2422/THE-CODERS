@@ -13,11 +13,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import ro.ubbcluj.map.thecoders.JavaPostgresSQL;
 import ro.ubbcluj.map.thecoders.Main;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.domain.validators.UserValidator;
-import ro.ubbcluj.map.thecoders.domain.validators.ValidationException;
 import ro.ubbcluj.map.thecoders.repository.Repository;
 import ro.ubbcluj.map.thecoders.repository.db.UtilizatorDbRepository;
 import ro.ubbcluj.map.thecoders.services.Service;
@@ -60,7 +58,6 @@ public class LoginController implements Initializable {
         lockImageView.setImage(lockImage);
     }
 
-
     public void loginButtonOnAction(ActionEvent event) throws SQLException, IOException {
         if(usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false){
             validateLogin();
@@ -80,17 +77,13 @@ public class LoginController implements Initializable {
     }
 
     public void validateLogin() throws SQLException {
-        // JavaPostgresSQL.findIntoDatabase(usernameTextField.getText(),enterPasswordField.getText());
-
         user = repository.findOneByUsername(usernameTextField.getText(), enterPasswordField.getText());
-
         if(user == null){
             loginMessageLabel.setText("Invalid login. Please try again!");
         }else{
             loginMessageLabel.setText("Congratulations!");
             Functionalities();
         }
-
     }
 
     public void createAccountForm(){

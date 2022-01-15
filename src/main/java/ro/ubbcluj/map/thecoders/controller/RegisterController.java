@@ -1,6 +1,5 @@
 package ro.ubbcluj.map.thecoders.controller;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,11 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import ro.ubbcluj.map.thecoders.JavaPostgresSQL;
 import ro.ubbcluj.map.thecoders.domain.User;
-import ro.ubbcluj.map.thecoders.domain.validators.UserValidator;
-import ro.ubbcluj.map.thecoders.repository.Repository;
-import ro.ubbcluj.map.thecoders.repository.db.UtilizatorDbRepository;
 import ro.ubbcluj.map.thecoders.services.Service;
 
 import java.io.File;
@@ -74,7 +69,6 @@ public class RegisterController implements Initializable {
     public void registerButtonOnAction(ActionEvent event) throws SQLException {
         if(setPasswordField.getText().equals(confirmPasswordField.getText())){
             registerUser();
-
             registrationMessageLabel.setText("User has been registered successfully!");
             confirmPasswordLabel.setText("Password match!");
         }
@@ -91,7 +85,6 @@ public class RegisterController implements Initializable {
 
     public void registerUser() throws SQLException {
 
-//        Repository<Long,User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
         User user = new User(firstnameTextField.getText(),
                 lastnameTextField.getText(),
                 usernameTextField.getText(),

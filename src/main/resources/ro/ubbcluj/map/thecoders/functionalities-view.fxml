@@ -168,7 +168,8 @@
                         <TableColumn fx:id="tableColumnFirstName1" prefWidth="125.0" text="FirstName" />
                         <TableColumn fx:id="tableColumnLastName1" prefWidth="107.0" text="LastName" />
                         <TableColumn fx:id="tableColumnUserName1" prefWidth="117.0" text="UserName" />
-                        <TableColumn fx:id="tableColumnUserName11" prefWidth="117.0" text="Status" />
+                        <TableColumn fx:id="tableColumnStatus1" prefWidth="117.0" text="Status" />
+                        <TableColumn fx:id="tableColumnDate1" prefWidth="117.0" text="Date" />
                      </columns>
                   </TableView>
                </children>

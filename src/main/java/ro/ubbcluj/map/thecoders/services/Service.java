@@ -37,7 +37,6 @@ public class Service<ID, E extends Entity<ID>> implements Observable<MessageChan
         return repository.listMessagesUsers(idUser1,idUser2);
     }
 
-
     public Iterable<E> getAll(){
         return repository.findAll();
     }
@@ -49,6 +48,9 @@ public class Service<ID, E extends Entity<ID>> implements Observable<MessageChan
      */
     public List<E> allFriendsForOneUser(ID id){
         return repository.findAllFriendsForOneUser(id);
+    }
+    public List<E> findUserForAllFriends(ID id){
+        return repository.findUserForAllFriends(id);
     }
 
     /**
@@ -79,7 +81,6 @@ public class Service<ID, E extends Entity<ID>> implements Observable<MessageChan
     public List<E> allFriendsForOneUserByMonth(ID idUser, Integer month)  {
         return repository.findAllFriendsForOneUserByMonth(idUser, month);
     }
-
 
     /**
      * @param entity The User that we want to save in the repository
@@ -158,6 +159,10 @@ public class Service<ID, E extends Entity<ID>> implements Observable<MessageChan
         repository.deleteFriendRepo(id1,id2);
     }
 
+    public void deleteRequestServ(Long id1, Long id2) {
+        repository.deleteRequestRepo(id1,id2);
+    }
+
     /**
      * One user send message to a friend
      * @param idUser The id that will send message
@@ -166,7 +171,6 @@ public class Service<ID, E extends Entity<ID>> implements Observable<MessageChan
      */
     public void sendOneMessage(ID idUser, ID idFriend, String message) throws SQLException {
         repository.sendMessageRepo(idUser,idFriend,message);
-
     }
 
     /**
@@ -207,16 +211,13 @@ public class Service<ID, E extends Entity<ID>> implements Observable<MessageChan
         repository.answerFriendshipRequest(idUser, idFriend, raspuns);
     }
 
-
     @Override
     public void addObserver(Observer<MessageChangeEvent> e) {
         observers.add(e);
     }
 
     @Override
-    public void removeObserver(Observer<MessageChangeEvent> e) {
-
-    }
+    public void removeObserver(Observer<MessageChangeEvent> e) {}
 
     @Override
     public void notifyObservers(MessageChangeEvent t) {
