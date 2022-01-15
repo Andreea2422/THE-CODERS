@@ -88,9 +88,9 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     @FXML
     TableView<User> tableView;
     @FXML
-    TableView<Request> tableView1;  //request
+    TableView<Request> tableView1;
     @FXML
-    TableView<User> tableView2;  //user
+    TableView<User> tableView2;
     @FXML
     TableColumn<User, String> tableColumnFirstName;
     @FXML
@@ -311,8 +311,8 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
         service = new Service(repository);
 
         ChatController chatController = fxmlLoader.getController();
-        chatController.setService(service);
         chatController.setUser(user);
+        chatController.setService(service);
 
         registerStage.setScene(scene);
         registerStage.show();
@@ -382,9 +382,19 @@ public class FunctionalitiesController implements Observer<UserChangeEvent> {
     }
 
 
-    public void eventsButtonOnAction(ActionEvent event){
-        Stage stage = (Stage) signOutButton.getScene().getWindow();
-        stage.close();
+    public void eventsButtonOnAction(ActionEvent event) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/ro/ubbcluj/map/thecoders/events-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 195, 400);
+        Stage registerStage = new Stage();
+        registerStage.initStyle(StageStyle.UNDECORATED);
+        Repository<Long, User> repository = new UtilizatorDbRepository("jdbc:postgresql://localhost:5432/academic", "postgres","1234",new UserValidator());
+        service = new Service(repository);
+        EventsController eventsController = fxmlLoader.getController();
+        eventsController.setUser(user);
+        eventsController.setService(service);
+        registerStage.setScene(scene);
+        registerStage.show();
+
     }
 
     private List<User> getFriendsList() {

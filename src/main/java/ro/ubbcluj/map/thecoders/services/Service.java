@@ -1,6 +1,7 @@
 package ro.ubbcluj.map.thecoders.services;
 
 import ro.ubbcluj.map.thecoders.domain.Entity;
+import ro.ubbcluj.map.thecoders.domain.Events;
 import ro.ubbcluj.map.thecoders.domain.Message;
 import ro.ubbcluj.map.thecoders.domain.User;
 import ro.ubbcluj.map.thecoders.repository.Repository;
@@ -220,5 +221,18 @@ public class Service<ID, E extends Entity<ID>> implements Observable<MessageChan
     @Override
     public void notifyObservers(MessageChangeEvent t) {
         observers.stream().forEach(x->x.update(t));
+    }
+
+    public void saveSubscription(ID idUser, String event) {
+        repository.saveSubscription(idUser,event);
+    }
+
+    public void deleteSubscription(ID idUser, String event) {
+        repository.deleteSubscription(idUser,event);
+    }
+
+    public List<Events> getAllEvents(ID idUser){
+            return repository.getAllEvents(idUser);
+
     }
 }

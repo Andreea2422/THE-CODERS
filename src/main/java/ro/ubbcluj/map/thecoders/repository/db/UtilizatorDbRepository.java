@@ -1,9 +1,6 @@
 package ro.ubbcluj.map.thecoders.repository.db;
 
-import ro.ubbcluj.map.thecoders.domain.Entity;
-import ro.ubbcluj.map.thecoders.domain.Message;
-import ro.ubbcluj.map.thecoders.domain.Request;
-import ro.ubbcluj.map.thecoders.domain.User;
+import ro.ubbcluj.map.thecoders.domain.*;
 import ro.ubbcluj.map.thecoders.domain.validators.Validator;
 import ro.ubbcluj.map.thecoders.repository.paging.Page;
 import ro.ubbcluj.map.thecoders.repository.paging.Pageable;
@@ -753,5 +750,59 @@ public class UtilizatorDbRepository<ID,E extends Entity<ID>> implements PagingRe
     @Override
     public Page<E> findAll(Pageable pageable) {
         return null;
+    }
+
+    @Override
+    public void saveSubscription(ID idUser, String event) {
+        String sql = "insert into events (id_user, event_name, date) values (?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            User user = (User) findOne(idUser);
+            ps.setLong(1, (Long) user.getId());
+            ps.setString(2, event);
+            Calendar calendar = Calendar.getInstance();
+            java.util.Date currentTime = calendar.getTime();
+            long time = currentTime.getTime();
+            ps.setTimestamp(3,new Timestamp(time));
+            ps.executeUpdate();
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteSubscription(ID idUser, String event) {
+        String sql = "delete from events where id_user = '" + idUser + "' and event_name = '" + event +"'";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.executeUpdate();
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Events> getAllEvents(ID idUser) {
+        List<Events> list = new ArrayList<>();
+        String sql = "SELECT * FROM events where id_user = " + idUser;
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                User user = (User) findOne((ID) idUser);
+                String name = resultSet.getString("event_name");
+                Date sqlDate = new Date(resultSet.getDate("date").getTime());
+                Events event = new Events(user,name,sqlDate);
+                list.add(event);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

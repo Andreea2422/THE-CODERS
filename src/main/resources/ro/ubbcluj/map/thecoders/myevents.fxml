@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.ubbcluj.map.thecoders.controller.MyEventsController">
+   <children>
+      <TableView fx:id="tableView" layoutY="21.0" prefHeight="377.0" prefWidth="520.0" style="-fx-background-color: #FFE9A4;">
+         <columns>
+            <TableColumn fx:id="tableColumnName" prefWidth="264.0" style="-fx-background-color: #EDA83B;" text="Event" />
+            <TableColumn fx:id="columnDate" prefWidth="256.00006103515625" style="-fx-background-color: #EDA83B;" text="Days Until" />
+         </columns>
+      </TableView>
+      <Button fx:id="returnButton" layoutY="-3.0" mnemonicParsing="false" onAction="#returnButtonOnAction" prefHeight="18.0" prefWidth="520.0" style="-fx-background-color: #EDA83B; -fx-border-color: black;" text="Return" />
+   </children>
+</AnchorPane>

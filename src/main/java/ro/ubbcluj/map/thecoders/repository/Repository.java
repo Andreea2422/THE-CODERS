@@ -1,6 +1,7 @@
 package ro.ubbcluj.map.thecoders.repository;
 
 import ro.ubbcluj.map.thecoders.domain.Entity;
+import ro.ubbcluj.map.thecoders.domain.Events;
 import ro.ubbcluj.map.thecoders.domain.Message;
 import ro.ubbcluj.map.thecoders.domain.validators.ValidationException;
 
@@ -121,6 +122,9 @@ public interface Repository<ID, E extends Entity<ID>> {
 
     Iterable<Message> getAllMessages();
     Iterable<Message> listMessagesUsers(ID idUser1, ID idUser2);
+    void saveSubscription(ID idUser, String event);
+    void deleteSubscription(ID idUser, String event);
+    List<Events> getAllEvents(ID idUser);
 
 
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -11,13 +12,11 @@
 
 <AnchorPane prefHeight="386.0" prefWidth="487.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.ubbcluj.map.thecoders.controller.MsgController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eda83b" height="50.0" layoutY="-8.0" stroke="#eda83b" strokeType="INSIDE" width="487.0" />
-      <Button fx:id="goBackButton" layoutY="-1.0" mnemonicParsing="false" onAction="#goBackOnAction" prefHeight="38.0" prefWidth="87.0" text="Go Back" />
       <VBox layoutY="37.0" prefHeight="348.0" prefWidth="487.0">
          <children>
-            <TableView fx:id="tableViewMsg" prefHeight="276.0" prefWidth="487.0" style="-fx-background-color: #FFE9A4;">
+            <TableView fx:id="tableViewMsg" prefHeight="276.0" prefWidth="487.0" style="-fx-selection-bar: #AEADAD; -fx-background-color: #FFE9A4;">
                <columns>
-                  <TableColumn fx:id="friendColumn" prefWidth="486.40001220703124" style="-fx-background-color: #FFE9A4;" />
+                  <TableColumn fx:id="friendColumn" prefWidth="486.40001220703124" style="-fx-selection-bar: #AEADAD; -fx-background-color: #FFE9A4;" />
                </columns>
             </TableView>
          </children>
@@ -28,5 +27,9 @@
             <Button fx:id="sendButton" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="32.0" prefWidth="87.0" text="Send" />
          </children>
       </HBox>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eda83b" height="68.0" layoutY="-8.0" stroke="#eda83b" strokeType="INSIDE" width="487.0" />
+      <Button fx:id="goBackButton" layoutY="-1.0" mnemonicParsing="false" onAction="#goBackOnAction" prefHeight="60.0" prefWidth="87.0" text="Go Back" />
+      <Button fx:id="replyButton" layoutX="400.0" layoutY="355.0" mnemonicParsing="false" onAction="#replyButtonOnAction" prefHeight="32.0" prefWidth="87.0" text="Reply" />
+      <Label fx:id="replyLabel" alignment="CENTER" layoutX="15.0" layoutY="345.0" prefHeight="42.0" prefWidth="295.0" textFill="#fc4e4e" />
    </children>
 </AnchorPane>

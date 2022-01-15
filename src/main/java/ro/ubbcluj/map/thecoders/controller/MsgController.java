@@ -1,9 +1,14 @@
 package ro.ubbcluj.map.thecoders.controller;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -36,6 +41,8 @@ public class MsgController implements Observer<MessageChangeEvent> {
       private Button goBackButton;
       @FXML
       private TextField messageTextField;
+      @FXML
+      private Label replyLabel;
       @FXML
       TableView<Message> tableViewMsg;
       @FXML
@@ -89,6 +96,21 @@ public class MsgController implements Observer<MessageChangeEvent> {
             service.sendOneMessage(user.getId(),selected.getId(),msg);
             initModel();
         }
+
+      public void replyButtonOnAction(ActionEvent event) throws SQLException {
+            Message msg = tableViewMsg.getSelectionModel().getSelectedItem();
+            if (msg != null) {
+                  String reply = messageTextField.getText();
+                  if (reply != ""){
+                        service.replyOneMessage(user.getId(),selected.getId(),reply);
+                        initModel();
+                  }
+                  else {
+                        replyLabel.setText("Nu ati scris niciun mesaj");
+                  }
+            } else
+                  replyLabel.setText("Nu ati selectat nici un mesaj");
+      }
 
       @Override
         public void update(MessageChangeEvent messageChangeEvent) {
