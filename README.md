@@ -1,5 +1,5 @@
 # THE-CODERS
-- Extended University Project - in collaboration with [Olimpia Bozdog](https://github.com/olimpia20)
+- Extended University Project - in collaboration with [Olimpia Bozdog](https://github.com/BozdogOlimpia)
 - Work in progress
 
 ## Technologies used
