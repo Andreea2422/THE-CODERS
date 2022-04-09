@@ -1,4 +1,6 @@
-# THE-CODERS
+# THE CODERS
+The social network app gives the user the possibility to make new friends and keep in touch with them via instant messages.<br>
+The user can also view different events that might interest them and subscribe to them.
 > **Extended University Project - in collaboration with [Olimpia Bozdog](https://github.com/olimpia20)**
 > 
 > **Work in progress**
@@ -13,9 +15,10 @@
      - subscribe / unsubscribe from events
 
 ## In progress
-> - Show more details about an event
+> - Add details about an event
 > - Notify when an event is approaching
 > - A more user-friendly interface
+> - Display the messages in a better way
 > - Create group chats
 > - Statistics about a user's activities on the app - pie charts, PDF report format
 
